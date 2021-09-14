@@ -1,0 +1,129 @@
+/* required css on label field */
+.required:after{
+  content:" *";
+  color: red;
+}
+/* CSS for event details */
+aside {
+    float: right;
+    width: 30%;
+    height: 800px; 
+    background: rgba(255, 171, 74, 0.938);
+    padding: 20px;
+  }
+  
+  /* Style the list inside the menu */
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  article {
+    float: left;
+    padding: 20px;
+    width: 70%;
+    background-color: #ffffff;
+    height: 800px; /* only for demonstration, should be removed */
+  }
+  
+  /* Clear floats after the columns */
+  section::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+    
+  /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+  @media (max-width: 600px) {
+    nav, article {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .word-wrap{
+      word-wrap: break-word;
+      width: 650px; 
+      border: 0px solid #000000;
+      display: inline-block;
+      word-break: break-word;
+  }
+
+  .ms-0 {
+    margin-left: 0 !important;
+  }
+/* End - CSS for event details */
+
+/* card month year */
+.exp-wrapper {
+  position: relative;
+  border: 1px solid #aaa;
+  display: flex;
+  width: 100px;
+  justify-content: space-around;
+  height: 25px;
+  line-height: 20px;
+  font-size: 22px;
+
+}
+
+.exp-wrapper:after {
+  content: '/';
+  position: absolute;
+  left: 50%;
+  margin-left: -4px;
+  color: #aaa;
+  
+}
+
+input.exp {
+  font-family: monospace;
+  border: 0;
+  width: 28px;
+  outline: none;
+  appearance: none;
+  font-size: 12px;
+}
+
+  /* for login */
+.login-content{
+    padding: 150px 100px;
+  
+  }
+/* for event creation */
+.event-content{
+padding: 70px 0px;
+margin-right: -200px;
+
+}
+/* for edit profile */
+.profile-content{
+padding: 100px 0px;
+margin-right: -300px;
+
+}
+
+/* for home event */
+.event-content-home{
+padding-left: 20px;
+padding-right: 20px;
+
+}
+
+/* for event details */
+.event-content-details{
+    padding: 10px 100px;
+    padding-left: 30px;
+    padding-bottom: 50px;
+    background-color: rgb(255, 253, 251);
+    margin-right: 100px;
+    margin-left: -100px;
+}
+
+/* for event assistant page*/
+.event-assistant{
+  padding: 70px 0px;
+  margin-right: -500px;
+  margin-left: 20px;
+
+}
