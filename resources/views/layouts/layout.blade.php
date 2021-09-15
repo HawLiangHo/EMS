@@ -10,11 +10,11 @@
 			<!-- NAVBAR -->
 			<nav class="navbar navbar-default navbar-fixed-top">
 				<div class="brand">
-				@if(Auth::check() && Auth::user()->isAssistant())
+				{{-- @if(Auth::check() && Auth::user()->isAssistant())
 				<a href="{{ route("manageEvents") }}"><img src="/assets/img/logo.png" alt="System Logo" class="img-responsive logo">
 					<h5 style="color: #F4902E"><b>Event Management System | @yield("navtitle")</b></h5>
-				</a>
-				@elseif(Auth::check() && Auth::user()->isAdmin() && Auth::user()->isParticipant())
+				</a> --}}
+				@if(Auth::check() && Auth::user()->isAdmin() | Auth::user()->isParticipant())
 				<a href="{{ route('home') }}"><img src="/assets/img/logo.png" alt="System Logo" class="img-responsive logo">
 					<h5 style="color: #F4902E"><b>Event Management System | @yield("navtitle")</b></h5>
 				</a>
@@ -25,9 +25,9 @@
 				@endif
 
 				</div>
-				@if (Auth::check())
+				
 				@include('layouts.nav')
-				@endif
+				
 			</nav>
 			<!-- END NAVBAR -->
 			<!--Sidebar-->

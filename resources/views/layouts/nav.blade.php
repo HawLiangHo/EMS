@@ -36,6 +36,15 @@
                         <li><a href="#">Troubleshooting</a></li>
                     </ul>
                 </li> --}}
+                @if (Route::currentRouteName() == "login")
+                <li class="dropdown">
+                    <a href="{{ route("assistantLogin") }}">
+                        <span style="font-size: 15px;">Login for Event Assistant</span>
+                        <i class="lnr lnr-enter" style="font-size:15px"></i>
+                    </a> 
+                </li>
+                @endif
+                @if (Auth::check() && Route::currentRouteName() != "login" && Auth::user()->isAdmin() | Auth::user()->isParticipant())
                 <li class="dropdown">
                     <a href="{{ route("billing") }}">
                         <span>RM {{ number_format(Auth::user()->credit_balance,2) }}</span>
@@ -63,6 +72,17 @@
                         <li><a href="{{ route("logout") }}"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
                     </ul>
                 </li>
+                @elseif(Auth::check() && Route::currentRouteName() != "login" && Auth::user()->isAssistant())
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span>{{ Auth::user()->username }}</span>
+                        <i class="icon-submenu lnr lnr-chevron-down"></i>
+                    </a>    
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ route("logout") }}"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+                    </ul>
+                </li>
+                @endif
             </ul>
         </div>
 </div>

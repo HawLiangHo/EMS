@@ -87,7 +87,8 @@ input.exp {
 
   /* for login */
 .login-content{
-    padding: 150px 100px;
+    padding: 130px 100px;
+    margin-right: -100px;
   
   }
 /* for event creation */

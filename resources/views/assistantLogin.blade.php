@@ -1,11 +1,11 @@
 @extends('layouts.layout')
 
 @section("title")
-	Login | Event Management System
+	Login For Assistant | Event Management System
 @endsection
 
 @section("navtitle")
-    Login
+    Login For Assistant 
 @endsection
 
 @section('content')
@@ -22,7 +22,7 @@
                             @if (session('message'))
                                 <div class="text-success row mb-3 col-sm-6 offset-sm-3">{{ session('message') }}</div><br>
                             @endif
-                            <form method="POST" action="{{ route('login') }}">
+                            <form method="POST" action="{{ route('assistantLogin') }}">
                                 @csrf
                             <div class="form-group row">
                                 <label for="username" class="col-md-4 col-form-label text-md-right required">{{ __('Username') }}</label>
@@ -80,7 +80,7 @@
                                     <button type="submit" class="btn btn-primary" value="Login">
                                         Login
                                     </button>
-                                    <a class="btn btn-primary" href="{{ route('register') }}">Register an Account</a>
+                                    <a class="btn btn-primary" href="/">Back to Login</a>
 
                                     @if (Route::has('password.request'))
                                         <a class="btn btn-link" href="{{ route('password.request') }}">

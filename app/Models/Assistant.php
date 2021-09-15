@@ -13,6 +13,8 @@ class Assistant extends Authenticatable
     // use HasApiTokens, HasFactory, Notifiable;
     use HasFactory, Notifiable;
 
+    protected $guard = 'assistant';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -31,6 +33,7 @@ class Assistant extends Authenticatable
         'role',
         'address',
         'credit_balance',
+        'event_id'
     ];
 
     /**
@@ -54,6 +57,10 @@ class Assistant extends Authenticatable
 
     public function event(){
         return $this->belongsTo(Events::class, "event_id");
+    }
+
+    public function users(){
+        return $this->belongsTo(User::class, "id");
     }
 
     //new lines

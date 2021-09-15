@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'assistant' => [
+            'driver' => 'session',
+            'provider' => 'assistants',
+        ],
     ],
 
     /*
@@ -69,6 +74,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'assistant' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Assistant::class,
+        ],
     ],
 
     /*
@@ -89,6 +99,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'assistant' => [
+            'provider' => 'assistant',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

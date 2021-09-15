@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->integer('role'); //admin-0, participant-1
             $table->string('address')->nullable();
             $table->double('credit_balance')->nullable();
+            $table->integer('assistant_id')->nullable();
+            $table->integer('event_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -45,6 +47,17 @@ class CreateUsersTable extends Migration
             "role" => 1,
             "password" => Hash::make("1234"),
             "credit_balance" => 0
+        ]);
+
+        User::create([
+            "email" => "customer1@gmail.com",
+            "username" => "customer 1",
+            "phone" => "012-3456789",
+            "role" => 2,
+            "password" => Hash::make("1234"),
+            "credit_balance" => 0,
+            "assistant_id" => 1,
+            "event_id" => 1
         ]);
     }
 

@@ -178,7 +178,7 @@
                         <div class="col-md-3">
                             <input type="date" id="endDate" class="form-control @error('end_date') is-invalid @enderror" 
                             name="end_date" 
-                            value="{{ old('end_date') }}">
+                            value="{{ old('end_date',$events->end_date) }}">
                             @error('end_date')
                                 <span class="invalid-feedback" role="alert">
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
@@ -192,7 +192,7 @@
                         <div class="col-md-3">
                             <input type="time" id="startTime" class="form-control @error('start_time') is-invalid @enderror" 
                             name="start_time" placeholder='hh:mm' onfocus="this.placeholder = ''"
-                            value="{{ old('start_time') }}"
+                            value="{{ old('start_time',$events->start_time) }}"
                             min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d"
                             >
                             @error('start_time')
@@ -205,7 +205,7 @@
                         <div class="col-md-3">
                             <input type="time" id="endTime" class="form-control @error('end_time') is-invalid @enderror" 
                             name="end_time"
-                            value="{{ old('end_time') }}"
+                            value="{{ old('end_time',$events->end_time) }}"
                             min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d">
                             @error('end_time')
                                 <span class="invalid-feedback" role="alert">

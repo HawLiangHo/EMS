@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class AssistantController extends Controller
 {
+
     public function manageUsers($id){
         $events = Events::findOrFail($id);
         $assistants = Assistant::all()->where('event_id', $id);
@@ -45,23 +46,49 @@ class AssistantController extends Controller
         $assistant->role = 2;
         $assistant->save();
 
-        $user = new User();
-        $user->username = request('username');
-        $user->email = request('email');
-        $user->phone = request('phone');
-        $user->password = Hash::make(request('password'));
-        $user->role = 2;
-        $user->address = NULL;
-        $user->credit_balance = NULL;
-        $user->save();
+        // $user = new User();
+        // $user->username = request('username');
+        // $user->email = request('email');
+        // $user->phone = request('phone');
+        // $user->password = Hash::make(request('password'));
+        // $user->role = 2;
+        // $user->address = NULL;
+        // $user->credit_balance = NULL;
+        // $user->event_id = $id;
+        // $user->save();
 
         return redirect()->route('manageUsers', ['id'=>$id])->with('message', 'Assistant registered successfully');
     }
 
-    public function editUSer($id, $user_id){
+    public function editUser($id, $user_id){
         $events = Events::findOrFail($id);
         $assistants = Assistant::findOrFail($user_id);
 
-        return view('editUSer', ['events' => $events, 'assistants' => $assistants]);
+        return view('editUser', ['events' => $events, 'assistants' => $assistants]);
     }
+
+    public function updateAssistant(Request $request, $id, $user_id){
+        $this->validate(
+            $request,
+            [
+                'username' => 'required|max:255|unique:users,username,'.$id.'',
+                'email' => 'required|email|max:255|unique:users,email,'.$id.'',
+                'phone' => 'required|regex:/^(\+6)?01[0-46-9]-[0-9]{7,8}$/|max:14',
+            ]);
+        
+            $assistant = Assistant::find($user_id);
+            $assistant->username = request('username');
+            $assistant->email = request('email');
+            $assistant->phone = request('phone');
+            $assistant->save();
+    
+            $user = User::find($assistant->user_id);
+            $user->username = request('username');
+            $user->email = request('email');
+            $user->phone = request('phone');
+            $user->save();
+
+        return redirect()->route('manageUsers', ['id'=>$id])->with('message', 'Assistant details updated successfully');
+    }
+
 }

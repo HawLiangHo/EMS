@@ -31,6 +31,8 @@ class User extends Authenticatable
         'role',
         'address',
         'credit_balance',
+        'event_id',
+        'assistant_id'
     ];
 
     /**
@@ -74,6 +76,9 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+    public function assistants() {
+        return $this->hasMany(Assistants::class, "id");
     }
 
 }

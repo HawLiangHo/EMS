@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', [LoginController::class, 'index'])->name("login");
 Route::post('/', [LoginController::class, 'store']);
+Route::get('/assistant',[LoginController::class, 'assistantLogin'])->name('assistantLogin');
+Route::post('/assistant', [LoginController::class, 'assistantLoginAction']);
 
 Route::get('/logout', [LogoutController::class, "index"])->name("logout");
 
@@ -52,6 +54,8 @@ Route::get('/manageUsers/{id}', [AssistantController::class, 'manageUsers'])->na
 Route::get('/addUsers/{id}', [AssistantController::class, 'addUsersPage'])->name('addUsers');
 Route::post('/addUsers/{id}',[AssistantController::class, 'createAssistant']);
 Route::get('/editUser/{id}/{user_id}',[AssistantController::class, 'editUser'])->name('editUser');
+Route::post('/editUser/{id}/{user_id}',[AssistantController::class, 'updateAssistant']);
+// Route::get('/manageEvents',[AssistantController::class, 'index'])->name('manageEvents');
 
 Route::get('/manageTickets/{id}',[TicketController::class, 'manageTickets'])->name('manageTickets');
 Route::get('/addTickets/{id}', [TicketController::class, 'addTicketsPage'])->name('addTickets');

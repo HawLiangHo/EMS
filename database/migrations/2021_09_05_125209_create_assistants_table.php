@@ -27,6 +27,15 @@ class CreateAssistantsTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('assistants')->insert(array(
+            "event_id" => 1,
+            "username" => "customer 1",
+            "email" => "cust1@gmail.com",
+            "phone" => "012-3456789",
+            "role" => 2,
+            "password" => Hash::make("1234"),
+        ));
     }
 
     /**
