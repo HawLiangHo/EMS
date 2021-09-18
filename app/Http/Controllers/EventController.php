@@ -66,7 +66,7 @@ class EventController extends Controller
         $user = User::find(Auth::id()); 
 
         $events = new Events();
-        $events->user_id = $userID;
+        $events->created_by = $userID;
         $events->username = $user->username;
         $events->title = request('title');
         $events->description = request('description');
@@ -103,9 +103,7 @@ class EventController extends Controller
     }
 
     public function manageEvent(){
-        $events = Events::all()->where('user_id', Auth::id());
-
-        return view('manageEvents', ['events' => $events]);
+        return view('manageEvents');
     }
 
     public function showDetails($id){
@@ -166,7 +164,6 @@ class EventController extends Controller
 
     public function publishEventPage($id){
         $events = Events::findOrFail($id);
-
         return view('publishEvent', ['events' => $events]);
     }
 

@@ -37,7 +37,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($events as $event)
+                                @foreach (Auth::user()->createdEvents as $event)
                                 <tr>
                                     <td class="align-middle text-md" style="padding-left: 25px">
                                         <h6 class="mb-0" style="text-align: center">{{ $loop->iteration }}</h6>
@@ -57,7 +57,7 @@
                                     </td>
                                 </tr>
                                     @endforeach
-                                    @if (count($events) == 0)
+                                    @if (count(Auth::user()->createdEvents) == 0)
                                         <tr>
                                             <td colspan="6" style="text-align: center;">No events created</td>
                                         </tr>

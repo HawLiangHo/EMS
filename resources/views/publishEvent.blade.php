@@ -73,7 +73,7 @@ Publish
                                 <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">{{ $events->tags }}</label><br>
                                 <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $events->event_status }}</label><br>
                                 <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots: {{ $events->remaining_num_of_participant }}/{{ $events->num_of_participant }}</label><br>
-                                <label class="ms-0" style="margin-left: 0; color:rgb(15, 15, 15);">{{ $events->user->username }}</label>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(15, 15, 15);">{{ $events->createdBy->username }}</label>
                             </div>
                         </div>
                     </div>

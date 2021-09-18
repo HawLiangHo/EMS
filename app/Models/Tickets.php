@@ -23,7 +23,7 @@ class Tickets extends Model
 
     ];
 
-    public function ticket(){
+    public function event(){
         return $this->belongsTo(Events::class, "event_id");
     }
 }

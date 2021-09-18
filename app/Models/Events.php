@@ -13,7 +13,7 @@ class Events extends Model
     protected $primarykey = "id";
 
     protected $fillable = [
-        'user_id',
+        'created_by',
         'username',
         'title',
         'description',
@@ -34,10 +34,19 @@ class Events extends Model
         'cover_image'
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class, "user_id");
+    public function createdBy(){
+        return $this->belongsTo(User::class, "created_by");
     }
+
+    public function users() {
+        return $this->belongsToMany(User::class, "user_event", "event_id", "user_id");
+    }
+    
     public function assistants() {
-        return $this->hasMany(Assistants::class, "id");
+        return $this->belongsToMany(User::class, "assistant_event", "event_id", "assistant_id");
+    }
+
+    public function tickets() {
+        return $this->hasMany(Tickets::class, "event_id");
     }
 }

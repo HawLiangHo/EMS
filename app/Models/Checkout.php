@@ -17,6 +17,13 @@ class Checkout extends Model
         'ticket_id',
         'quantity',
         'total_price'
-
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function ticket() {
+        return $this->belongsTo(Tickets::class, "ticket_id");
+    }
 }

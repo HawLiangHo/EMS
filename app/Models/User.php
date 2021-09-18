@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 // use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -77,8 +78,19 @@ class User extends Authenticatable
         }
         return false;
     }
-    public function assistants() {
-        return $this->hasMany(Assistants::class, "id");
+    
+    // return all event that are registered by this user
+    public function events() {
+        return $this->belongsToMany(Events::class, "user_event", "user_id", "event_id");
     }
 
+    // return all event that assistant by this user
+    public function assistantEvents() {
+        return $this->belongsToMany(Events::class, "assistant_event", "assistant_id", "event_id");
+    }
+
+    // return all event that are created by this user
+    public function createdEvents() {
+        return $this->hasMany(Events::class, "created_by");
+    }
 }
