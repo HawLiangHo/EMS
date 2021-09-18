@@ -36,12 +36,12 @@ Route::post('/changePassword',[UserController::class, 'changePassword']);
 Route::get('/billing',[UserController::class, 'openBilling'])->name("billing");
 Route::get('/reloadCredit',[UserController::class, 'reloadCreditPage'])->name("reloadCredit");
 Route::post('/reloadCredit',[UserController::class, 'reloadCreditAction'])->name("reloadCreditAction");
+Route::get('/myTickets',[UserController::class, 'myTickets'])->name("myTickets");
 
 Route::get('/home', [EventController::class, 'index'])->name("home");
 Route::get('/createEvent', [EventController::class, 'createEvent'])->name("createEvent");
 Route::post('/search', [EventController::class, 'homepageSearch'])->name("homeSearch");
 Route::post('/createEvent', [EventController::class, 'create']);
-Route::get('/viewEvents/{id}',[EventController::class, 'eventDetails'])->name('viewEvents');
 Route::get('/manageEvents', [EventController::class, 'manageEvent'])->name("manageEvents");
 Route::get('/manageEvents/{id}', [EventController::class, 'deleteEvent']);
 Route::get('/eventDetails/{id}', [EventController::class, 'showDetails'])->name("eventDetails");
@@ -49,12 +49,15 @@ Route::post('/eventDetails/{id}', [EventController::class, 'updateDetails']);
 Route::get('/publishEvent/{id}', [EventController::class, 'publishEventPage'])->name("publishEvent");
 Route::post('/publishEvent/{id}', [EventController::class, 'publishEventAction'])->name('publishEventAction');
 Route::get('/dashboard/{id}', [EventController::class, 'openDashboard'])->name("dashboard");
+Route::get('/viewEvents/{id}',[EventController::class, 'eventDetails'])->name('viewEvents');
+Route::get('/checkout/{id}',[EventController::class, 'showCheckout'])->name('checkout');
 
 Route::get('/manageUsers/{id}', [AssistantController::class, 'manageUsers'])->name('manageUsers');
 Route::get('/addUsers/{id}', [AssistantController::class, 'addUsersPage'])->name('addUsers');
 Route::post('/addUsers/{id}',[AssistantController::class, 'createAssistant']);
 Route::get('/editUser/{id}/{user_id}',[AssistantController::class, 'editUser'])->name('editUser');
 Route::post('/editUser/{id}/{user_id}',[AssistantController::class, 'updateAssistant']);
+Route::get('/assistantEvent',[AssistantController::class, 'assistantEvent'])->name('assistantEvent');
 // Route::get('/manageEvents',[AssistantController::class, 'index'])->name('manageEvents');
 
 Route::get('/manageTickets/{id}',[TicketController::class, 'manageTickets'])->name('manageTickets');

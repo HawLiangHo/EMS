@@ -102,4 +102,11 @@ class UserController extends Controller
         }
     }
 
+    public function myTickets(){
+        $users = DB::table('users')->get();
+        $users = DB::select('SELECT * FROM users WHERE id = '.Auth::id().'');
+
+        return view('myTickets',['users' => $users[0]]);
+    }
+
 }

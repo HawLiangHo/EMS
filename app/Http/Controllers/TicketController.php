@@ -32,6 +32,7 @@ class TicketController extends Controller
                 'type' => 'required',
                 'quantity' => 'required|numeric|min:1|max:1000',
                 'price' => 'required|numeric|min:0|max:1000',
+                'link' => 'required|max:255'
             ]);
         
         $ticket = new Tickets();
@@ -41,6 +42,7 @@ class TicketController extends Controller
         $ticket->quantity = request('quantity');
         $ticket->quantity_left = request('quantity');
         $ticket->price = request('price');
+        $ticket->link = request('link');
         $ticket->save();
 
         return redirect()->route('manageTickets', ['id'=>$id])->with('message', 'Ticket saved successfully');

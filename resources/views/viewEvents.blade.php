@@ -10,12 +10,12 @@
 
 @section('content')
 <div class="event-content-details">
-    <img style="height: 440px; width:100%; padding: 0.85rem;" class="img-fluid"
+    <img style="height: 500px; width:100%; padding: 0.85rem;" class="img-fluid"
                 src="data:image/png;base64,{{ chunk_split(base64_encode($events->cover_image)) }}">
     <div class="panel-heading">
         <h2 style="color: rgb(34, 34, 34)">{{ $events->title}}
-        @if()
-            <a href="#" style="float:right; font-size: 20px" class="btn btn-default">Register</a>
+        @if($events->event_status == "Open" && $events->user_id != Auth::id())
+            <a href="{{ route('checkout', ['id' => $events->id]) }}" style="float:right; font-size: 20px" class="btn btn-default">Register</a>
         @endif
         </h2>
     </div>
@@ -26,12 +26,19 @@
             <p style="color: rgb(255, 255, 255)">{{ $events->type }}</p>
             <br>
             <h3 style="color: rgb(255, 255, 255)">Date and Time</h3><br>
-            <p style="color: rgb(255, 255, 255)">{{ $events->start_date }} - {{ $events->end_date }},</p>
-            <p style="color: rgb(255, 255, 255)">{{ $events->start_time }} - {{ $events->end_time }}</p>
+            <p style="color: rgb(255, 255, 255)">Date: {{ $events->start_date }} - {{ $events->end_date }},</p>
+            <p style="color: rgb(255, 255, 255)">Time: {{ $events->start_time }} - {{ $events->end_time }}</p>
             <br>
             <h3 style="color: rgb(255, 255, 255)">Location</h3><br>
-            <p style="color: rgb(255, 255, 255)">{{ $events->venue_name }},</p>
-            <p style="color: rgb(255, 255, 255)">{{ $events->venue_address }}</p>
+            <p style="color: rgb(255, 255, 255)">Venue: {{ $events->venue_name }}</p>
+            @if($events->venue_address != "")
+                <p style="color: rgb(255, 255, 255)">Address: {{ $events->venue_address }}</p>
+            @endif
+            <br>
+            <h3 style="color: rgb(255, 255, 255)">Registration Details</h3><br>
+            <p style="color: rgb(255, 255, 255)">Registration Date: {{ $events->registration_start_date }} - {{ $events->registration_end_date }}</p>
+            <p style="color: rgb(255, 255, 255)">Number of Participants: {{ $events->num_of_participant }}</p>
+            <br>
         </aside>
         <article>
             <h3 style="color: rgb(34, 34, 34)">Tags</h3><br>

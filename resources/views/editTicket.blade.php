@@ -113,6 +113,29 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="link" class="col-md-4 col-form-label text-md-right required">{{ __('Attach Link') }}</label>
+
+                                <div class="col-md-4">
+                                    <input id="link" type="text" 
+                                    class="form-control @error('link') is-invalid @enderror" name="link" 
+                                    value="{{ old('link',$tickets->link) }}" required autocomplete="link" autofocus 
+                                    placeholder="Attach ticket link...">
+
+                                    @error('link')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <label for="price" class="col-md-4 col-form-label text-md-right">{{ __('Ticket QR Code') }}</label>
+
+                                <div class="col-md-2 offset-md-4">
+                                    {{ QrCode::generate($tickets->link) }}
+                                </div>
+                            </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-12 offset-md-4">
 

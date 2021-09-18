@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone');
-            $table->integer('role'); //admin-0, participant-1
+            $table->integer('role'); //admin-0, participant-1, assistant-2
             $table->string('address')->nullable();
             $table->double('credit_balance')->nullable();
             $table->integer('assistant_id')->nullable();

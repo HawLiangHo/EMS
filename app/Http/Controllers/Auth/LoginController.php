@@ -46,12 +46,9 @@ class LoginController extends Controller
         }
 
 
-        // if(auth()->user()->isAssistant()){
-        //     return redirect()->route("manageEvents");
-        // }
-        // else{
-        //     return redirect()->route("home");
-        // }
+        if(auth()->user()->isAssistant()){
+            return redirect()->route("manageEvents");
+        }
         return redirect()->route("home");
         
     }
@@ -70,6 +67,6 @@ class LoginController extends Controller
             return redirect()->route("assistantLogin")->withInput()->with("status", "Invalid login details");
         }
 
-        return redirect()->route("manageEvents");
+        return redirect()->route("assistantEvent");
     }
 }

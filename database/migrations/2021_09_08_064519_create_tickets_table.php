@@ -22,10 +22,41 @@ class CreateTicketsTable extends Migration
             $table->integer('quantity');
             $table->integer('quantity_left');
             $table->double('price');
+            $table->string('link');
             $table->timestamps();
         });
 
         // DB::statement("ALTER TABLE tickets ADD ticket_qr LONGBLOB");
+
+        DB::table('tickets')->insert(array(
+            'event_id' => 1,
+            'name' => "Ticket 1",
+            'type' => "General Admission",
+            'quantity' => 10,
+            'quantity_left' => 10,
+            'price' => 1,
+            'link' => "https://meet.google.com'",
+        ));
+
+        DB::table('tickets')->insert(array(
+            'event_id' => 1,
+            'name' => "Ticket 2",
+            'type' => "General Admission",
+            'quantity' => 10,
+            'quantity_left' => 10,
+            'price' => 5,
+            'link' => "https://meet.google.com'",
+        ));
+
+        DB::table('tickets')->insert(array(
+            'event_id' => 2,
+            'name' => "Ticket 1",
+            'type' => "General Admission",
+            'quantity' => 10,
+            'quantity_left' => 10,
+            'price' => 5,
+            'link' => "https://meet.google.com'",
+        ));
     }
 
     /**

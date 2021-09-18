@@ -51,7 +51,7 @@
                         <div class="col-md-9">
                             <input type="text" class="form-control @error('title') is-invalid @enderror" 
                             name="title" value="{{ old('title', $events->title) }}" 
-                            placeholder="(empty)" @if($events->status=="Published") readonly @endif>
+                            placeholder="(empty)" @if($events->publish_status=="Published") readonly @endif>
                             @error('title')
                                 <span class="invalid-feedback" role="alert">
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
@@ -67,7 +67,7 @@
                             class="form-control @error('description') border-danger @enderror" 
                             name="description" rows="6"
                             maxlength="65535" placeholder="(empty)"
-                            onkeyup="countWords(this)" @if($events->status=="Published") readonly @endif>{{ old('description', $events->description  )}}</textarea>
+                            onkeyup="countWords(this)" @if($events->publish_status=="Published") readonly @endif>{{ old('description', $events->description  )}}</textarea>
                             <div id="description_word_count" class="text-sm" style="text-align: right; font-size: 12px">
                                 0/65535
                             </div>
@@ -82,6 +82,7 @@
                     <div class="form-group row">
                         <label for="category" class="col-md-3 col-form-label text-md-right required">{{ __('Category') }}</label>
                         <div class="col-md-4">
+                        @if($events->publish_status != "Published")
                             <select id="category" name="category" class="form-control">
                                 <option value="null" disabled selected>Select event category</option>
                                 <option value="Conference" @if($events->category == "Conference") selected=selected; @endif>Conference</option>
@@ -98,6 +99,10 @@
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
                                 </span>
                             @enderror
+                        @else
+                            <input type="text" class="form-control @error('category') is-invalid @enderror" 
+                            name="category" value="{{ old('category', $events->category) }}" readonly>
+                        @endif
                         </div>
                     </div>
                     {{-- Event Tags --}}
@@ -106,7 +111,7 @@
                         <div class="col-md-6">
                             <input type="text" class="form-control @error('tags') is-invalid @enderror" 
                             name="tags" placeholder="e.g. #new#event"
-                            value="{{ old('tags',$events->tags) }}" @if($events->status=="Published") readonly @endif>
+                            value="{{ old('tags',$events->tags) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('tags')
                                 <span class="invalid-feedback" role="alert">
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
@@ -119,16 +124,21 @@
                     <div class="form-group row">
                         <label for="type" class="col-md-3 col-form-label text-md-right required">{{ __('Type of Event') }}</label>
                         <div class="col-md-4">
-                            <select id="type" name="type" class="form-control" onchange="checkValue(this.value)">
-                                <option value="null" disabled selected>Select event type</option>
-                                <option value="Virtual Event" @if($events->type == "Virtual Event") selected=selected; @endif>Virtual Event</option>
-                                <option value="Physical Event" @if($events->type == "Physical Event") selected=selected; @endif>Physical Event</option>
-                            </select>
-                            @error('type')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
-                                </span>
-                            @enderror
+                            @if($events->publish_status != "Published")
+                                <select id="type" name="type" class="form-control" onchange="checkValue(this.value)">
+                                    <option value="null" disabled selected>Select event type</option>
+                                    <option value="Virtual Event" @if($events->type == "Virtual Event") selected=selected; @endif>Virtual Event</option>
+                                    <option value="Physical Event" @if($events->type == "Physical Event") selected=selected; @endif>Physical Event</option>
+                                </select>
+                                @error('type')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            @else
+                                <input type="text" class="form-control @error('type') is-invalid @enderror" 
+                                name="type" value="{{ old('type', $events->type) }}" readonly>
+                            @endif
                         </div>
                     </div>
                     {{-- Venue Name --}}
@@ -137,7 +147,7 @@
                         <div class="col-md-6">
                             <input type="text" class="form-control @error('venue_name') is-invalid @enderror" 
                             name="venue_name" placeholder="Enter venue name"
-                            value="{{ old('venue_name',$events->venue_name) }}" @if($events->status=="Published") readonly @endif>
+                            value="{{ old('venue_name',$events->venue_name) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('venue_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
@@ -152,7 +162,7 @@
                         <div class="col-md-8">
                             <input type="text" class="form-control @error('venue_address') is-invalid @enderror" 
                             name="venue_address" onkeyup="address(this)" placeholder="Enter venue address"
-                            value="{{ old('venue_address',$events->venue_address) }}">
+                            value="{{ old('venue_address',$events->venue_address) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('venue_address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
@@ -167,7 +177,7 @@
                         <div class="col-md-3">
                             <input type="date" id="startDate" class="form-control @error('start_date') is-invalid @enderror" 
                             name="start_date" 
-                            value="{{ old('start_date',$events->start_date) }}">
+                            value="{{ old('start_date',$events->start_date) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('start_date')
                                 <span class="invalid-feedback" role="alert">
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
@@ -178,7 +188,7 @@
                         <div class="col-md-3">
                             <input type="date" id="endDate" class="form-control @error('end_date') is-invalid @enderror" 
                             name="end_date" 
-                            value="{{ old('end_date',$events->end_date) }}">
+                            value="{{ old('end_date',$events->end_date) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('end_date')
                                 <span class="invalid-feedback" role="alert">
                                     <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
@@ -192,7 +202,7 @@
                         <div class="col-md-3">
                             <input type="time" id="startTime" class="form-control @error('start_time') is-invalid @enderror" 
                             name="start_time" placeholder='hh:mm' onfocus="this.placeholder = ''"
-                            value="{{ old('start_time',$events->start_time) }}"
+                            value="{{ old('start_time',$events->start_time) }}" @if($events->publish_status=="Published") readonly @endif
                             min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d"
                             >
                             @error('start_time')
@@ -205,7 +215,7 @@
                         <div class="col-md-3">
                             <input type="time" id="endTime" class="form-control @error('end_time') is-invalid @enderror" 
                             name="end_time"
-                            value="{{ old('end_time',$events->end_time) }}"
+                            value="{{ old('end_time',$events->end_time) }}" @if($events->publish_status=="Published") readonly @endif
                             min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d">
                             @error('end_time')
                                 <span class="invalid-feedback" role="alert">
@@ -244,7 +254,7 @@
                         <label for="num_of_participant" class="col-md-3 col-form-label text-md-right required">{{ __('Number of Participants Allowed') }}</label>
                         <div class="col-md-3">
                             <input id="amount" type="number" name="num_of_participant" class="form-control @error('num_of_participant') is-invalid @enderror"
-                            maxlength="4" min="10" max="1000"
+                            maxlength="4" min="10" max="1000" @if($events->publish_status=="Published") readonly @endif
                             placeholder="Enter numbers" value="{{ old('num_of_participant',$events->num_of_participant) }}"
                             oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
                             >   
@@ -262,7 +272,7 @@
                         <label for="registration_start_date" class="col-md-3 col-form-label text-md-right required">{{ __('Registration Start Date') }}</label>
                         <div class="col-md-3">
                             <input type="date" id="startDate" class="form-control @error('registration_start_date') is-invalid @enderror" 
-                            name="registration_start_date" 
+                            name="registration_start_date" @if($events->publish_status=="Published") readonly @endif
                             value="{{ old('registration_start_date',$events->registration_start_date) }}">
                             @error('registration_start_date')
                                 <span class="invalid-feedback" role="alert">
@@ -273,7 +283,7 @@
                         <label for="registration_end_date" class="col-md-2 col-form-label text-md-right required">{{ __('Registration End Date') }}</label>
                         <div class="col-md-3">
                             <input type="date" id="endDate" class="form-control @error('registration_end_date') is-invalid @enderror" 
-                            name="registration_end_date" 
+                            name="registration_end_date" @if($events->publish_status=="Published") readonly @endif
                             value="{{ old('registration_end_date',$events->registration_end_date) }}">
                             @error('registration_end_date')
                                 <span class="invalid-feedback" role="alert">

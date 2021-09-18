@@ -39,7 +39,9 @@
                     <div class="panel-heading"><h3>List of Tickets</h3></div>
                     <div class="table-responsive p-0">
                         <div class="col-md-12 offset-md-4">
+                        @if($events->publish_status != "Published")
                             <a href="{{ route('addTickets',['id'=>$events->id]) }}" style="float:right;" class="btn btn-default">Add ticket</a>
+                        @endif
                         </div>
                         <table class="table align-items-center mb-0">
                             <thead>

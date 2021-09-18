@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Events;
+use App\Models\Tickets;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,7 +83,7 @@ class EventController extends Controller
             $events->venue_address = request('venue_address');
         }
         else{
-            $events->venue_address = "No address";
+            $events->venue_address = "";
         }
         $events->start_date = request('start_date');
         $events->end_date = request('end_date');
@@ -171,7 +172,8 @@ class EventController extends Controller
 
     public function publishEventAction($id){
         $event = Events::find($id);     
-        $event->status = "Published";
+        $event->publish_status = "Published";
+        $event->event_status = "Open";
         $event->save();
 
         $events = Events::all();
@@ -190,5 +192,12 @@ class EventController extends Controller
 
         $events = Events::all();
         return redirect('/manageEvents');
+    }
+
+    public function showCheckout($id){
+        $events = Events::findOrFail($id);
+        $tickets = Tickets::all()->where('event_id', $id);
+
+        return view('checkout', ['events' => $events, 'tickets' => $tickets]);
     }
 }

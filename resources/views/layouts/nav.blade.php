@@ -62,7 +62,7 @@
                     </a>    
                     <ul class="dropdown-menu">
                         <li><a href="{{ route("editProfile")}}"><i class="lnr lnr-cog"></i> <span>Profile Settings</span></a></li>
-                        <li><a href="#"><i class="lnr lnr-tag"></i> <span>My Tickets</span></a></li>
+                        <li><a href="{{ route("myTickets") }}"><i class="lnr lnr-tag"></i> <span>My Tickets</span></a></li>
                         @if(Auth::user()->isParticipant())
                         <li><a href="{{ route("createEvent") }}"><i class="lnr lnr-user"></i> <span>Become an organizer</span></a></li>
                         @endif

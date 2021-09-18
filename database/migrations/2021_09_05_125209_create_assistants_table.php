@@ -36,6 +36,15 @@ class CreateAssistantsTable extends Migration
             "role" => 2,
             "password" => Hash::make("1234"),
         ));
+
+        DB::table('assistants')->insert(array(
+            "event_id" => 2,
+            "username" => "customer 2",
+            "email" => "cust2@gmail.com",
+            "phone" => "012-3456789",
+            "role" => 2,
+            "password" => Hash::make("1234"),
+        ));
     }
 
     /**

@@ -39,7 +39,9 @@
                     <div class="panel-heading"><h3>List of Event Assistants</h3></div>
                     <div class="table-responsive p-0">
                         <div class="col-md-12 offset-md-4">
+                        @if($events->publish_status != "Published")
                             <a href="{{ route('addUsers',['id'=>$events->id]) }}" style="float:right;" class="btn btn-default">Add assistant</a>
+                        @endif
                         </div>
                         <table class="table align-items-center mb-0">
                             <thead>
@@ -56,9 +58,11 @@
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
                                         Phone
                                     </th>
+                                    @if($events->publish_status != "Published")
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
                                         Action
                                     </th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,13 +80,14 @@
                                     <td>
                                         <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $assistant->phone }}</p>
                                     </td>
+                                    @if($events->publish_status != "Published")
                                     <td class="align-middle text-center">
                                         <a href="{{ route('editUser', ['id' => $events->id, 'user_id' =>$assistant->id]) }}">
                                             <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
                                         <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $assistant->id }}" value="{{ $assistant->username }}"></a>
-                                        
                                     </td>
+                                    @endif
                                 </tr>
                                     @endforeach
                                     @if (count($assistants) == 0)

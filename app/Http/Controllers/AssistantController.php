@@ -91,4 +91,11 @@ class AssistantController extends Controller
         return redirect()->route('manageUsers', ['id'=>$id])->with('message', 'Assistant details updated successfully');
     }
 
+    public function assistantEvent(){
+        $assistants = Assistant::all()->where('id', Auth::id());
+        $events = Events::all()->where('id', Auth::id()); 
+
+        return view('assistantEvent',['assistants' => $assistants, 'events' => $events]);
+    }
+
 }

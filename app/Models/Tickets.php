@@ -19,7 +19,7 @@ class Tickets extends Model
         'quantity',
         'quantity_left',
         'price',
-        'ticket_qr'
+        'link',
 
     ];
 
