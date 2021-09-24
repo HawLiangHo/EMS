@@ -36,14 +36,14 @@
                         <li><a href="#">Troubleshooting</a></li>
                     </ul>
                 </li> --}}
-                @if (Route::currentRouteName() == "login")
+                {{-- @if (Route::currentRouteName() == "login")
                 <li class="dropdown">
                     <a href="{{ route("assistantLogin") }}">
                         <span style="font-size: 15px;">Login for Event Assistant</span>
                         <i class="lnr lnr-enter" style="font-size:15px"></i>
                     </a> 
                 </li>
-                @endif
+                @endif --}}
                 @if (Auth::check() && Route::currentRouteName() != "login" && Auth::user()->isAdmin() | Auth::user()->isParticipant())
                 <li class="dropdown">
                     <a href="{{ route("billing") }}">

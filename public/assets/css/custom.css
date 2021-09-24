@@ -128,3 +128,11 @@ padding-right: 20px;
   margin-left: 20px;
 
 }
+
+/* for event details */
+.event-content-myTickets{
+  padding: 70px 0px;
+  margin-right: 10px;
+  margin-left: -100px;
+  padding-left: 50px;
+}

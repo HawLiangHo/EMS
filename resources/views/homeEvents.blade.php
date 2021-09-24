@@ -14,7 +14,7 @@
                 <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $event->type }}</label><br>
                 <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">{{ $event->tags }}</label><br>
                 <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $event->event_status }}</label><br>
-                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots: {{ $event->remaining_num_of_participant }}/{{ $event->num_of_participant }}</label><br>
+                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots: {{ $event->remaining_num_of_participant }}</label><br>
                 <label class="ms-0" style="margin-left: 0; color:rgb(15, 15, 15);">{{ $event->createdBy->username }}</label>
             </div>
         </div>

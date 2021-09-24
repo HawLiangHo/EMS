@@ -11,7 +11,7 @@
 @section("sidebar")
 <!-- LEFT SIDEBAR -->
 	@auth
-	@if (Auth::user()->isAdmin())
+	@if (Auth::user()->isAdmin() | Auth::user()->isAssistant())
 	<div id="sidebar-nav" class="sidebar">
 		<div class="sidebar-scroll">
 			<nav>
@@ -91,11 +91,16 @@
                                         </p>
                                     </td>
                                     <td class="align-middle text-center">
+                                        @if ($events->publish_status != "Published")
                                         <a href="{{ route('editTicket', ['id' => $events->id, 'ticket_id' =>$ticket->id]) }}">
                                             <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
                                         <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $ticket->id }}" value="{{ $ticket->name }}"></a>
-                                        
+                                        @else
+                                        <a href="{{ route('editTicket', ['id' => $events->id, 'ticket_id' =>$ticket->id]) }}">
+                                            <i class="lnr lnr-magnifier btn-stock-action" style="color: orange; font-size: 25px;"></i>
+                                        </a>
+                                        @endif
                                     </td>
                                 </tr>
                                     @endforeach

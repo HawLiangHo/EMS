@@ -16,6 +16,9 @@
             <form action="{{ route('homeSearch') }}" method="post">
                 <input type="search" class="form-control" name="homeSearch" id="homeSearchInput"
                     placeholder="Search for events...">
+                <button type="submit" class="btn btn default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
             </form>
         </div>
 

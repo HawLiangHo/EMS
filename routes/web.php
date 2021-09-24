@@ -21,8 +21,6 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', [LoginController::class, 'index'])->name("login");
 Route::post('/', [LoginController::class, 'store']);
-Route::get('/assistant',[LoginController::class, 'assistantLogin'])->name('assistantLogin');
-Route::post('/assistant', [LoginController::class, 'assistantLoginAction']);
 
 Route::get('/logout', [LogoutController::class, "index"])->name("logout");
 
@@ -36,7 +34,14 @@ Route::post('/changePassword',[UserController::class, 'changePassword']);
 Route::get('/billing',[UserController::class, 'openBilling'])->name("billing");
 Route::get('/reloadCredit',[UserController::class, 'reloadCreditPage'])->name("reloadCredit");
 Route::post('/reloadCredit',[UserController::class, 'reloadCreditAction'])->name("reloadCreditAction");
+Route::get('/manageUsers/{id}', [UserController::class, 'manageUsers'])->name('manageUsers');
+Route::get('/addUsers/{id}', [UserController::class, 'addUsersPage'])->name('addUsers');
+Route::post('/addUsers/{id}',[UserController::class, 'createAssistant']);
+Route::get('/editUser/{id}/{user_id}',[UserController::class, 'editUser'])->name('editUser');
+Route::post('/editUser/{id}/{user_id}',[UserController::class, 'updateAssistant']);
+Route::get('/assistantEvent',[UserController::class, 'assistantEvent'])->name('assistantEvent');
 Route::get('/myTickets',[UserController::class, 'myTickets'])->name("myTickets");
+Route::get('/manageUsers/deleteAssistant/{id}', [UserController::class, 'deleteAssistant']); //faulty
 
 Route::get('/home', [EventController::class, 'index'])->name("home");
 Route::get('/createEvent', [EventController::class, 'createEvent'])->name("createEvent");
@@ -51,14 +56,8 @@ Route::post('/publishEvent/{id}', [EventController::class, 'publishEventAction']
 Route::get('/dashboard/{id}', [EventController::class, 'openDashboard'])->name("dashboard");
 Route::get('/viewEvents/{id}',[EventController::class, 'eventDetails'])->name('viewEvents');
 Route::get('/checkout/{id}',[EventController::class, 'showCheckout'])->name('checkout');
-
-Route::get('/manageUsers/{id}', [AssistantController::class, 'manageUsers'])->name('manageUsers');
-Route::get('/addUsers/{id}', [AssistantController::class, 'addUsersPage'])->name('addUsers');
-Route::post('/addUsers/{id}',[AssistantController::class, 'createAssistant']);
-Route::get('/editUser/{id}/{user_id}',[AssistantController::class, 'editUser'])->name('editUser');
-Route::post('/editUser/{id}/{user_id}',[AssistantController::class, 'updateAssistant']);
-Route::get('/assistantEvent',[AssistantController::class, 'assistantEvent'])->name('assistantEvent');
-// Route::get('/manageEvents',[AssistantController::class, 'index'])->name('manageEvents');
+Route::post('/checkout/{id}',[EventController::class, 'checkoutRegister']);
+// Route::get('/checkoutConfirm/{id}',[EventController::class, 'confirmCheckoutPage'])->name('checkoutConfirm');
 
 Route::get('/manageTickets/{id}',[TicketController::class, 'manageTickets'])->name('manageTickets');
 Route::get('/addTickets/{id}', [TicketController::class, 'addTicketsPage'])->name('addTickets');

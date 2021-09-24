@@ -129,5 +129,6 @@ class DatabaseSeeder extends Seeder
         ));
         $event = Events::find(1);
         $event->users()->attach([1,2]);
+        $event->assistants()->attach([3,1]);
     }
 }

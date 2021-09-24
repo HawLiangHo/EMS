@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="panel panel-headline">
-                    <div class="panel-heading"><p style="color:red;">* Transactions made will not be refund!</p></div>
+                    <div class="panel-heading"><p style="color:red; font-style:italic;">* Transactions made will not be refund!</p></div>
                     <div class="panel-body">
                         @if (session('message'))
                         <div class="text-danger row mb-3 col-sm-6 offset-sm-3">{{ session('message') }}</div><br>

@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-0">
-                                <label for="price" class="col-md-4 col-form-label text-md-right">{{ __('Ticket QR Code') }}</label>
+                                <label for="qrcode" class="col-md-4 col-form-label text-md-right">{{ __('Ticket QR Code') }}</label>
 
                                 <div class="col-md-2 offset-md-4">
                                     {{ QrCode::generate($tickets->link) }}

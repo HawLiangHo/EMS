@@ -84,6 +84,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Events::class, "user_event", "user_id", "event_id");
     }
 
+    public function tickets() {
+        return $this->belongsToMany(Tickets::class, Checkout::class, "user_id", "ticket_id");
+    }
+
+    public function checkouts() {
+        return $this->hasMany(Checkout::class, "user_id");
+    }
+
     // return all event that assistant by this user
     public function assistantEvents() {
         return $this->belongsToMany(Events::class, "assistant_event", "assistant_id", "event_id");

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Events;
 use App\Models\Tickets;
 use App\Models\User;
+use App\Models\Checkout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -193,8 +194,42 @@ class EventController extends Controller
 
     public function showCheckout($id){
         $events = Events::findOrFail($id);
-        $tickets = Tickets::all()->where('event_id', $id);
 
-        return view('checkout', ['events' => $events, 'tickets' => $tickets]);
+        return view('checkout', ['events' => $events]);
     }
+
+    public function checkoutRegister(Request $request, $id){
+        $events = Events::findOrFail($id);
+        
+        // $this->validate(
+        //     $request,
+        //     [
+        //         "quantity" => "array",
+        //         "quantity.*" => "required|integer",
+        //     ]
+        // );
+        $tickets = [];
+        for ($i=0; $i < count($request->quantity); $i++) {
+            if($request->quantity[$i] != null){
+                $tickets[] = [
+                    "ticket_id" => $request->ticketID[$i],
+                    "quantity" => $request->quantity[$i],
+                    "total_price" => $request->price[$i] * $request->quantity[$i],
+                    "paid_status" => "Unpaid",
+                ];
+            } 
+        }
+        // foreach($request->checkouts as $checkout){
+        //     $tickets[] =[
+        //         "ticket_id" => $id,
+        //         "quantity" => $checkout->quantity
+        //     ]; 
+        // }
+
+        Auth::user()->checkouts()->createMany($tickets);
+
+        return view('checkoutConfirm',['events'=>$events]);
+    }
+
+
 }

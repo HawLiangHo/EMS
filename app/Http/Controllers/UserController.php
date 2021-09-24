@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AssistantNotificationMail;
 use App\Models\User;
 use App\Models\Events;
 use App\Notifications\AdminCreatedNotification;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -100,6 +102,86 @@ class UserController extends Controller
     
             return redirect('/billing')->with('message',$message);
         }
+    }
+
+    public function manageUsers($id){
+        $events = Events::findOrFail($id);
+
+        return view('manageUsers', [ 'events' => $events]);
+    }
+
+    public function addUsersPage($id){
+        $events = Events::findOrFail($id);
+
+        return view('addUsers', ['events' => $events]);
+    }
+
+    public function deleteAssistant($id){
+        $assistant = User::find($id);
+        $events = Events::findOrFail($assistant->assistantEvents);
+        $assistant->assistantEvents()->detach($id);
+
+        return view('manageUsers', [ 'events' => $events]);
+        
+    }
+
+    public function createAssistant(Request $request, $id){
+        $this->validate(
+            $request,
+            [
+                'username' => 'required|max:255|unique:users,username',
+                'email' => 'required|email|max:255|unique:users,email',
+                'phone' => 'required|regex:/^(\+6)?01[0-46-9]-[0-9]{7,8}$/|max:14',
+                'password' => 'required|confirmed|min:4|max:255',
+            ]);
+        
+        $assistant = new User();
+        $assistant->username = request('username');
+        $assistant->email = request('email');
+        $assistant->phone = request('phone');
+        $assistant->password = Hash::make(request('password'));
+        $assistant->role = 2;
+        $assistant->save();
+
+        $assistant->assistantEvents()->attach($id);
+
+        $password = request('password');
+
+        Mail::to($assistant->email)->send(new AssistantNotificationMail($assistant, $password));
+
+        return redirect()->route('manageUsers', ['id'=>$id])->with('message', 'Assistant registered successfully');
+    }
+
+    public function editUser($id, $user_id){
+        $events = Events::findOrFail($id);
+        $assistants = User::findOrFail($user_id);
+
+        return view('editUser', ['events' => $events, 'assistants' => $assistants]);
+    }
+
+    public function updateAssistant(Request $request, $id, $user_id){
+        $this->validate(
+            $request,
+            [
+                'username' => 'required|max:255|unique:users,username,'.$id.'',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|regex:/^(\+6)?01[0-46-9]-[0-9]{7,8}$/|max:14',
+            ]);
+        
+            $assistant = User::find($user_id);
+            $assistant->username = request('username');
+            $assistant->email = request('email');
+            $assistant->phone = request('phone');
+            $assistant->save();
+
+        return redirect()->route('manageUsers', ['id'=>$id])->with('message', 'Assistant details updated successfully');
+    }
+
+    public function assistantEvent(){
+        $assistants = User::all()->where('id', Auth::id());
+        $events = Events::all()->where('id', Auth::id()); 
+
+        return view('assistantEvent',['assistants' => $assistants, 'events' => $events]);
     }
 
     public function myTickets(){

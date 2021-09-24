@@ -11,7 +11,7 @@
 @section("sidebar")
 <!-- LEFT SIDEBAR -->
 	@auth
-	@if (Auth::user()->isAdmin())
+	@if (Auth::user()->isAdmin() | Auth::user()->isAssistant())
 	<div id="sidebar-nav" class="sidebar">
 		<div class="sidebar-scroll">
 			<nav>
@@ -58,15 +58,13 @@
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
                                         Phone
                                     </th>
-                                    @if($events->publish_status != "Published")
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
                                         Action
                                     </th>
-                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($assistants as $assistant)
+                                @foreach ($events->assistants as $assistant)
                                 <tr>
                                     <td class="align-middle text-md" style="padding-left: 25px">
                                         <h6 class="mb-0" style="text-align: center">{{ $loop->iteration }}</h6>
@@ -85,12 +83,18 @@
                                         <a href="{{ route('editUser', ['id' => $events->id, 'user_id' =>$assistant->id]) }}">
                                             <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
-                                        <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $assistant->id }}" value="{{ $assistant->username }}"></a>
+                                        <a class="lnr lnr-trash btn-stock-action deleteAssistant" style="color: orange; font-size: 25px;" id="{{ $assistant->id }}" value="{{ $assistant->username }}" event="{{ $events->id  }}"></a>
+                                    </td>
+                                    @else
+                                    <td class="align-middle text-center">
+                                        <a href="{{ route('editUser', ['id' => $events->id, 'user_id' =>$assistant->id]) }}">
+                                            <i class="lnr lnr-magnifier btn-stock-action" style="color: orange; font-size: 25px;"></i>
+                                        </a>
                                     </td>
                                     @endif
                                 </tr>
                                     @endforeach
-                                    @if (count($assistants) == 0)
+                                    @if (count($events->assistants) == 0)
                                         <tr>
                                             <td colspan="6" style="text-align: center;">No event assistants added!</td>
                                         </tr>
@@ -103,4 +107,38 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).on('click', '.deleteAssistant', function() {
+		    var id = $(this).attr('id');
+		    var name = $(this).attr('value');
+            var event = $(this).attr('event');
+            Swal.fire({
+                title: 'Delete this assistant?',
+                text: 'Assistant Name: ' + '"' + name + '"',
+                icon: 'warning',
+                customClass: 'swal-wide',
+                showCancelButton: true,
+                cancelButtonColor: '#F00',
+                confirmButtonColor: '#00F',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Deleted the selected assistant: " + '"' + name + '"',
+                        icon: 'success',
+                        type: 'success',
+                        customClass: 'swal-wide',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(function() {
+                        window.location.href = "/manageUsers/deleteAssistant/" + id;
+                    });
+                }
+		    });
+        });
+    </script>
 @endsection

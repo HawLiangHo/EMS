@@ -11,7 +11,7 @@
 @section("sidebar")
 <!-- LEFT SIDEBAR -->
 	@auth
-	@if (Auth::user()->isAdmin())
+	@if (Auth::user()->isAdmin() | Auth::user()->isAssistant())
 	<div id="sidebar-nav" class="sidebar">
 		<div class="sidebar-scroll">
 			<nav>
@@ -295,9 +295,11 @@
                     {{-- Submit button --}}
                     <div class="form-group row mb-0">
                         <div class="col-md-12 offset-md-4"><br>
-                            <button type="submit" class="btn btn-primary" value="Submit" >
-                                Update Details
-                            </button>
+                            @if ($events->publish_status !="Published")
+                                <button type="submit" class="btn btn-primary" value="Submit" >
+                                    Update Details
+                                </button>
+                            @endif
                         </div>
                     </div>
                     </form>

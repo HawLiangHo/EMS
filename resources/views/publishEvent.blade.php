@@ -5,13 +5,13 @@
 @endsection
 
 @section("navtitle")
-Publish
+    Publish
 @endsection
 
 @section("sidebar")
 <!-- LEFT SIDEBAR -->
 	@auth
-	@if (Auth::user()->isAdmin())
+	@if (Auth::user()->isAdmin() | Auth::user()->isAssistant())
 	<div id="sidebar-nav" class="sidebar">
 		<div class="sidebar-scroll">
 			<nav>
@@ -44,7 +44,10 @@ Publish
                     Confirm Publish
                 </button>
             @else
-                <p>"{{ $events->title }}"  has been published</p>
+                <p style="color:red; font-style:italic;">* "{{ $events->title }}"  has been published</p>
+                <button type="submit" class="btn btn-primary" value="Submit" style="float: right;" disabled>
+                    Confirm Publish
+                </button>
             @endif
             </form>
         </div>
@@ -72,7 +75,7 @@ Publish
                                 <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $events->type }}</label><br>
                                 <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">{{ $events->tags }}</label><br>
                                 <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $events->event_status }}</label><br>
-                                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots: {{ $events->remaining_num_of_participant }}/{{ $events->num_of_participant }}</label><br>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots: {{ $events->remaining_num_of_participant }}</label><br>
                                 <label class="ms-0" style="margin-left: 0; color:rgb(15, 15, 15);">{{ $events->createdBy->username }}</label>
                             </div>
                         </div>
