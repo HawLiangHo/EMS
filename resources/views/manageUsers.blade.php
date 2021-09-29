@@ -83,12 +83,12 @@
                                         <a href="{{ route('editUser', ['id' => $events->id, 'user_id' =>$assistant->id]) }}">
                                             <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
-                                        <a class="lnr lnr-trash btn-stock-action deleteAssistant" style="color: orange; font-size: 25px;" id="{{ $assistant->id }}" value="{{ $assistant->username }}" event="{{ $events->id  }}"></a>
+                                        <a class="lnr lnr-trash btn-stock-action deleteAssistant" style="color: orange; font-size: 25px;" id="{{ $assistant->id }}" value="{{ $assistant->username }}"></a>
                                     </td>
                                     @else
                                     <td class="align-middle text-center">
                                         <a href="{{ route('editUser', ['id' => $events->id, 'user_id' =>$assistant->id]) }}">
-                                            <i class="lnr lnr-magnifier btn-stock-action" style="color: orange; font-size: 25px;"></i>
+                                            <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
                                     </td>
                                     @endif
@@ -114,7 +114,6 @@
         $(document).on('click', '.deleteAssistant', function() {
 		    var id = $(this).attr('id');
 		    var name = $(this).attr('value');
-            var event = $(this).attr('event');
             Swal.fire({
                 title: 'Delete this assistant?',
                 text: 'Assistant Name: ' + '"' + name + '"',
@@ -135,7 +134,7 @@
                         showConfirmButton: false,
                         timer: 1500,
                     }).then(function() {
-                        window.location.href = "/manageUsers/deleteAssistant/" + id;
+                        window.location.href = "/manageUsers/deleteAssistant/{{ $events->id }}/" + id;
                     });
                 }
 		    });

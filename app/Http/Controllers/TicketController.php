@@ -74,4 +74,14 @@ class TicketController extends Controller
 
         return redirect()->route('manageTickets', ['id'=>$id])->with('message', 'Ticket updated successfully');
     }
+
+    public function deleteTicket($eventID, $id){
+        $event = Events::findOrFail($eventID);
+        $ticket = Tickets::findOrFail($id);
+        $ticket->delete($id);
+
+        return view('manageTickets', [ 'events' => $event]);
+        
+    }
+
 }

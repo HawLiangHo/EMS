@@ -44,8 +44,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (Auth::user()->checkouts as $checkout)
-                                    @if ($checkout->paid_status == "Paid")
+                                    @forelse (Auth::user()->checkouts as $checkout)
                                     <tr>
                                         <td class="align-middle text-md" style="padding-left: 25px">
                                             <h6 class="mb-0" style="text-align: center">{{ $loop->iteration }}</h6>
@@ -66,24 +65,18 @@
                                             <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">RM {{  number_format($checkout->total_price, 2) }}</p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <a href="#">
-                                                <i class="lnr lnr-magnifier btn-stock-action" style="color: orange; font-size: 25px;"></i>
+                                            {{-- <a class="lnr lnr-eye btn-stock-action" onclick="showTicket('{{  $checkout->ticket->event->title }}','{{ $checkout->ticket->name }}','{{  $checkout->ticket->type }}','{{  $checkout->quantity }}','{{  $checkout->ticket->link}}')" style="color: orange; font-size: 25px;"></a> --}}
+                                            <a href="{{ route('viewMyTicket', ['id' => $checkout->id]) }}">    
+                                                <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>                                                    
                                             </a>
-                                            <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $checkout->id }}" value="{{ $checkout->ticket->name }}"></a>
+                                            <a class="lnr lnr-trash btn-stock-action deleteRegisteredTicket" style="color: orange; font-size: 25px;" id="{{ $checkout->id }}" value="{{ $checkout->ticket->name }}"></a>
                                         </td>
                                     </tr>
-                                    @else
+                                    @empty
                                     <tr>
-                                        <td colspan="6" style="text-align: center; padding-left: 100px; padding-top: 30px;">You have yet to fully register any events!</td>
+                                        <td colspan="6" style="text-align: center; padding-left: 100px; padding-top: 30px;">You have yet to register any events!</td>
                                     </tr>
-                                    @endif
-                                    @endforeach                                  
-                                   
-                                    @if (count(Auth::user()->checkouts) == 0)
-                                        <tr>
-                                            <td colspan="6" style="text-align: center; padding-left: 100px; padding-top: 30px;">You have yet to register any events!</td>
-                                        </tr>
-                                    @endif
+                                    @endforelse                                  
                                 </tbody>
                             </table>
                         </div>
@@ -93,4 +86,37 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).on('click', '.deleteRegisteredTicket', function() {
+		    var id = $(this).attr('id');
+		    var name = $(this).attr('value');
+            Swal.fire({
+                title: 'Delete this ticket?',
+                text: 'Ticket Name: ' + '"' + name + '"',
+                icon: 'warning',
+                customClass: 'swal-wide',
+                showCancelButton: true,
+                cancelButtonColor: '#F00',
+                confirmButtonColor: '#00F',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Deleted the selected ticket: " + '"' + name + '"',
+                        icon: 'success',
+                        type: 'success',
+                        customClass: 'swal-wide',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(function() {
+                        window.location.href = "/myTickets/deleteRegisteredTicket/" + id;
+                    });
+                }
+		    });
+        });
+</script>
 @endsection

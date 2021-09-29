@@ -11,7 +11,7 @@
 @section("sidebar")
 <!-- LEFT SIDEBAR -->
 	@auth
-	@if (Auth::user()->isAdmin())
+	@if (Auth::user()->isAdmin() | Auth::user()->isAssistant())
 	<div id="sidebar-nav" class="sidebar">
 		<div class="sidebar-scroll">
 			<nav>
@@ -47,7 +47,9 @@
                                     <input id="name" type="text" 
                                     class="form-control @error('name') is-invalid @enderror" name="name" 
                                     value="{{ old('name',$tickets->name) }}" required autocomplete="name" autofocus 
-                                    placeholder="Enter ticket name...">
+                                    placeholder="Enter ticket name..." 
+                                    @if ($events->publish_status == "Published") readonly @endif>
+                                    
 
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -60,7 +62,9 @@
                             <div class="form-group row">
                                 <label for="type" class="col-md-4 col-form-label text-md-right required">{{ __('Ticket Type') }}</label>
 
+                                
                                 <div class="col-md-4">
+                                @if ($events->publish_status != "Published")
                                     <select id="type" name="type" class="form-control">
                                         <option value="null" disabled selected>Ticket Type</option>
                                         <option value="General Admission" @if($tickets->type == "General Admission") selected=selected; @endif>General Admission</option>
@@ -77,6 +81,10 @@
                                             <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                @else
+                                    <input type="text" class="form-control @error('type') is-invalid @enderror" 
+                                    name="type" value="{{ old('type', $tickets->type) }}" readonly>
+                                @endif
                                 </div>
                             </div>
 
@@ -87,7 +95,8 @@
                                     <input id="quantity" type="text" name="quantity" class="form-control"
                                     maxlength="4" min="1" max="1000" value="{{ old('quantity',$tickets->quantity) }}"
                                     placeholder="Quantity" 
-                                    oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                                    oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                                    @if ($events->publish_status == "Published") readonly @endif>
 
                                     @error('quantity')
                                         <span class="invalid-feedback" role="alert">
@@ -104,7 +113,8 @@
                                     <input id="price" type="text" name="price" class="form-control"
                                     maxlength="4" min="0" max="1000" value="{{ old('price',$tickets->price) }}"
                                     placeholder="0.00" 
-                                    oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                                    oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                                    @if ($events->publish_status == "Published") readonly @endif>
 
                                     @error('price')
                                         <span class="invalid-feedback" role="alert">
@@ -120,7 +130,8 @@
                                     <input id="link" type="text" 
                                     class="form-control @error('link') is-invalid @enderror" name="link" 
                                     value="{{ old('link',$tickets->link) }}" required autocomplete="link" autofocus 
-                                    placeholder="Attach ticket link...">
+                                    placeholder="Attach ticket link..."
+                                    @if ($events->publish_status == "Published") readonly @endif>
 
                                     @error('link')
                                         <span class="invalid-feedback" role="alert">
@@ -143,9 +154,11 @@
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-12 offset-md-4">
-                                    <button type="submit" class="btn btn-primary" value="Submit">
-                                        {{ __('Update ticket') }}
-                                    </button>
+                                    @if ($events->publish_status != "Published")
+                                        <button type="submit" class="btn btn-primary" value="Submit" >
+                                            {{ __('Update ticket') }}
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </form>

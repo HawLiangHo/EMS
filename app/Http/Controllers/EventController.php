@@ -21,6 +21,18 @@ class EventController extends Controller
         return view('home',['events'=>$events]);
     }
 
+    public function index2(){
+        $events = Events::all();
+
+        return view('homeOngoing',['events'=>$events]);
+    }
+
+    public function index3(){
+        $events = Events::all();
+
+        return view('homePast',['events'=>$events]);
+    }
+
     public function createEvent(){
         return view('/createEvent');
     }
@@ -36,11 +48,52 @@ class EventController extends Controller
         $events = Events::where('title', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
             ->orWhere('username', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
             ->orWhere('tags', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('type', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('event_status', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('start_date', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('start_time', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
             ->get();
+
         if ($events->isEmpty()) {
             return view('noResult');
         } else {
-            return view('homeEvents', ['events' => $events]);
+            return view('homeEvents1', ['events' => $events]);
+        }
+    }
+
+    public function homepageSearch2(Request $request)
+    {
+        $events = Events::where('title', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('username', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('tags', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('type', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('event_status', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('start_date', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('start_time', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->get();
+
+        if ($events->isEmpty()) {
+            return view('noResult');
+        } else {
+            return view('homeEvents2', ['events' => $events]);
+        }
+    }
+
+    public function homepageSearch3(Request $request)
+    {
+        $events = Events::where('title', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('username', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('tags', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('type', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('event_status', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('start_date', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->orWhere('start_time', 'LIKE', '%' . addcslashes($request->homeSearch, '%_') . '%')
+            ->get();
+
+        if ($events->isEmpty()) {
+            return view('noResult');
+        } else {
+            return view('homeEvents3', ['events' => $events]);
         }
     }
 
@@ -211,14 +264,14 @@ class EventController extends Controller
         $tickets = [];
         for ($i=0; $i < count($request->quantity); $i++) {
             if($request->quantity[$i] != null){
-                $tickets[] = [
-                    "ticket_id" => $request->ticketID[$i],
+                $ticket = Tickets::find($request->ticketID[$i]);
+                $tickets[] = collect([
+                    "ticket" => $ticket,
                     "quantity" => $request->quantity[$i],
-                    "total_price" => $request->price[$i] * $request->quantity[$i],
-                    "paid_status" => "Unpaid",
-                ];
+                ]);
             } 
         }
+        $tickets = collect($tickets);
         // foreach($request->checkouts as $checkout){
         //     $tickets[] =[
         //         "ticket_id" => $id,
@@ -226,10 +279,71 @@ class EventController extends Controller
         //     ]; 
         // }
 
-        Auth::user()->checkouts()->createMany($tickets);
+        // Auth::user()->checkouts()->createMany($tickets);
 
-        return view('checkoutConfirm',['events'=>$events]);
+        // return view('checkoutConfirm',['events'=>$events]);
+        return redirect()->route('checkoutConfirm', ['id'=>$id])->with("tickets", $tickets);
     }
 
+    public function checkoutConfirmPage($id){
+        $events = Events::findOrFail($id);
 
+        return view('checkoutConfirm', ['events' => $events]);
+    }
+
+    public function confirmFinalCheckout(Request $request, $id){
+        $events = Events::findOrFail($id);
+
+        switch($request->input('action')){
+            case 'cancel':
+                return redirect()->route('home');
+
+            break;
+
+            case 'confirm': 
+                $user = Auth::user();
+                $totalPrice = 0;
+                $checkouts = array();
+                for ($i=0; $i < count($request->quantity); $i++) {
+                    if($request->quantity[$i] != null){
+                        $ticket = Tickets::find($request->ticketID[$i]);
+                        $checkouts[] = [
+                            "ticket_id" => $ticket->id,
+                            "quantity" => $request->quantity[$i],
+                            "total_price" => $ticket->price * $request->quantity[$i],
+                            "paid_status" => "123",
+                        ];
+                    }
+                    $totalPrice += $ticket->price * $request->quantity[$i];
+                }
+                if ($user->credit_balance < $totalPrice) {
+                    $this->validate(
+                        $request,[
+                            'amount' => 'numeric|min:5|max:1500',
+                            'ccn' => 'max:19',
+                    ]);
+                }
+                
+                $user->checkouts()->createMany($checkouts);
+        
+                // $checkouts = Checkout::where('user_id',$user->id);
+                // $tickets = array();
+                // foreach($checkouts as $checkout){
+                //     array_push($tickets, $checkout->total_price);
+                // }
+                // $totalPrice = 0.0;
+                // for ($i=0; $i < count($checkouts); $i++) {
+                //     $totalPrice = $totalPrice + $tickets[$i];
+                // } 
+
+                // $total_reload = $request->amount + $user->credit_balance;
+                $user->credit_balance += ($request->amount ?? 0) - $totalPrice;
+                $user->save();
+                return redirect()->route('myTickets');
+        
+
+            break;
+        }
+
+    }
 }

@@ -85,6 +85,32 @@ input.exp {
   font-size: 12px;
 }
 
+nav ul li.active {
+  border-bottom: 2px solid rgb(248, 142, 35);
+}
+
+@media print{
+  /* Hide every other element */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Then displaying print container elements */
+  .print-container, .print-container * {
+    visibility: visible;
+  }
+
+  /* Adjusting the position to always start from top left */
+  .print-container{ 
+    position: absolute;
+    left: -100px;
+    top: 0px;
+    right: 100px;
+
+  }
+
+}
+
   /* for login */
 .login-content{
     padding: 130px 100px;

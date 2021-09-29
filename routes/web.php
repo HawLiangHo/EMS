@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,12 +39,18 @@ Route::post('/addUsers/{id}',[UserController::class, 'createAssistant']);
 Route::get('/editUser/{id}/{user_id}',[UserController::class, 'editUser'])->name('editUser');
 Route::post('/editUser/{id}/{user_id}',[UserController::class, 'updateAssistant']);
 Route::get('/assistantEvent',[UserController::class, 'assistantEvent'])->name('assistantEvent');
+Route::get('/manageUsers/deleteAssistant/{eventID}/{id}', [UserController::class, 'deleteAssistant']);
 Route::get('/myTickets',[UserController::class, 'myTickets'])->name("myTickets");
-Route::get('/manageUsers/deleteAssistant/{id}', [UserController::class, 'deleteAssistant']); //faulty
+Route::get('/viewMyTicket/{id}',[UserController::class, 'viewTicket'])->name("viewMyTicket");
+Route::get('/myTickets/deleteRegisteredTicket/{id}', [UserController::class, 'deleteRegisteredTicket']);
 
 Route::get('/home', [EventController::class, 'index'])->name("home");
+Route::get('/homeOngoing', [EventController::class, 'index2']);
+Route::get('/homePast', [EventController::class, 'index3']);
 Route::get('/createEvent', [EventController::class, 'createEvent'])->name("createEvent");
 Route::post('/search', [EventController::class, 'homepageSearch'])->name("homeSearch");
+Route::post('/searchOngoing', [EventController::class, 'homepageSearch2'])->name("homeSearch2");
+Route::post('/searchPast', [EventController::class, 'homepageSearch3'])->name("homeSearch3");
 Route::post('/createEvent', [EventController::class, 'create']);
 Route::get('/manageEvents', [EventController::class, 'manageEvent'])->name("manageEvents");
 Route::get('/manageEvents/{id}', [EventController::class, 'deleteEvent']);
@@ -57,11 +62,13 @@ Route::get('/dashboard/{id}', [EventController::class, 'openDashboard'])->name("
 Route::get('/viewEvents/{id}',[EventController::class, 'eventDetails'])->name('viewEvents');
 Route::get('/checkout/{id}',[EventController::class, 'showCheckout'])->name('checkout');
 Route::post('/checkout/{id}',[EventController::class, 'checkoutRegister']);
-// Route::get('/checkoutConfirm/{id}',[EventController::class, 'confirmCheckoutPage'])->name('checkoutConfirm');
+Route::get('/checkoutConfirm/{id}',[EventController::class, 'checkoutConfirmPage'])->name('checkoutConfirm');
+Route::post('/checkoutConfirm/{id}',[EventController::class, 'confirmFinalCheckout'])->name('confirmFinalCheckout');
 
 Route::get('/manageTickets/{id}',[TicketController::class, 'manageTickets'])->name('manageTickets');
 Route::get('/addTickets/{id}', [TicketController::class, 'addTicketsPage'])->name('addTickets');
 Route::post('/addTickets/{id}', [TicketController::class, 'saveTicket']);
 Route::get('/editTicket/{id}/{ticket_id}', [TicketController::class, 'editTicket'])->name('editTicket');
 Route::post('/editTicket/{id}/{ticket_id}',[TicketController::class, 'updateTicket']);
+Route::get('/manageTickets/deleteTicket/{eventID}/{id}', [TicketController::class, 'deleteTicket']);
 

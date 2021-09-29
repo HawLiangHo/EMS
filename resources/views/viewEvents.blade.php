@@ -14,7 +14,7 @@
                 src="data:image/png;base64,{{ chunk_split(base64_encode($events->cover_image)) }}">
     <div class="panel-heading">
         <h2 style="color: rgb(34, 34, 34)">{{ $events->title}}
-        @if($events->event_status == "Open" && $events->created_by != Auth::id())
+        @if($events->event_status == "Open" && $events->created_by != Auth::id() && $events->remaining_num_of_participant != 0)
             <a href="{{ route('checkout', ['id' => $events->id]) }}" style="float:right; font-size: 20px" class="btn btn-default">Register</a>
         @endif
         </h2>

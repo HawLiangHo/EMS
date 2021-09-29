@@ -62,7 +62,7 @@
                                                 @if($event->publish_status != "Published")
                                                 <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                                 @else
-                                                <i class="lnr lnr-magnifier btn-stock-action" style="color: orange; font-size: 25px;"></i>
+                                                <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                                 @endif
                                             </a>
                                             <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $event->id }}" value="{{ $event->title }}"></a>
@@ -85,13 +85,15 @@
                                                 <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $event->event_status }}</p>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <a href="{{ route('eventDetails', ['id' => $event->id]) }}">
-                                                    @if($event->publish_status != "Published")
-                                                    <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
-                                                    @else
-                                                    <i class="lnr lnr-magnifier btn-stock-action" style="color: orange; font-size: 25px;"></i>
-                                                    @endif
+                                                @if($event->publish_status != "Published")
+                                                <a href="{{ route('eventDetails', ['id' => $event->id]) }}">    
+                                                    <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>                                                    
                                                 </a>
+                                                @else
+                                                <a href="{{ route('eventDetails', ['id' => $event->id]) }}"> 
+                                                    <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>
+                                                </a>
+                                                @endif
                                                 <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $event->id }}" value="{{ $event->title }}"></a>
                                             </td>
                                         </tr>

@@ -81,7 +81,7 @@
                         {{-- CVV/CVC --}}
                         <div class="form-group row">
                             <label for="ccn" class="col-md-4 col-form-label text-md-right required">{{ __('CVV/CVC') }}</label>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <input id="cvv" type="text" name="cvv" class="form-control"
                                 pattern="[0-9]{3}" maxlength="3" size="3"
                                 placeholder="---" oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">                            

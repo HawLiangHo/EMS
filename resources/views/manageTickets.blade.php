@@ -67,7 +67,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($tickets as $ticket)
+                                @foreach ($events->tickets as $ticket)
                                 <tr>
                                     <td class="align-middle text-md" style="padding-left: 25px">
                                         <h6 class="mb-0" style="text-align: center">{{ $loop->iteration }}</h6>
@@ -95,16 +95,16 @@
                                         <a href="{{ route('editTicket', ['id' => $events->id, 'ticket_id' =>$ticket->id]) }}">
                                             <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
-                                        <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $ticket->id }}" value="{{ $ticket->name }}"></a>
+                                        <a class="lnr lnr-trash btn-stock-action deleteTicket" style="color: orange; font-size: 25px;" id="{{ $ticket->id }}" value="{{ $ticket->name }}"></a>
                                         @else
                                         <a href="{{ route('editTicket', ['id' => $events->id, 'ticket_id' =>$ticket->id]) }}">
-                                            <i class="lnr lnr-magnifier btn-stock-action" style="color: orange; font-size: 25px;"></i>
+                                            <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
                                         @endif
                                     </td>
                                 </tr>
                                     @endforeach
-                                    @if (count($tickets) == 0)
+                                    @if (count($events->tickets) == 0)
                                         <tr>
                                             <td colspan="6" style="text-align: center;">No tickets created!</td>
                                         </tr>
@@ -117,4 +117,37 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script>
+        $(document).on('click', '.deleteTicket', function() {
+		    var id = $(this).attr('id');
+		    var name = $(this).attr('value');
+            Swal.fire({
+                title: 'Delete this ticket?',
+                text: 'Ticket Name: ' + '"' + name + '"',
+                icon: 'warning',
+                customClass: 'swal-wide',
+                showCancelButton: true,
+                cancelButtonColor: '#F00',
+                confirmButtonColor: '#00F',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Deleted the selected ticket: " + '"' + name + '"',
+                        icon: 'success',
+                        type: 'success',
+                        customClass: 'swal-wide',
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(function() {
+                        window.location.href = "/manageTickets/deleteTicket/{{ $events->id }}/" + id;
+                    });
+                }
+		    });
+        });
+    </script>
 @endsection

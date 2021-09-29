@@ -123,20 +123,26 @@
         document.getElementById('updatePrice').innerHTML = "Total: RM " + Number(totalPrice).toFixed(2);
     }
     
+    var counter =0;
+    @foreach ($events->tickets as $ticket)
     //Program to disable or enable a button using javascript
-    let input = document.querySelector(".input");
-    let button = document.querySelector(".button");
+    input = document.querySelector("#quantity{{ $ticket->id }}");
+    button = document.querySelector(".button");
 
     button.disabled = true; //setting button state to disabled
 
     input.addEventListener("change", stateHandle);
 
     function stateHandle() {
-        if (document.querySelector(".input").value === "") {
+        if (document.querySelector("#quantity{{ $ticket->id }}").value === "" && counter != 0) {
             button.disabled = true; //button remains disabled
+            counter--;
         } else {
             button.disabled = false; //button is enabled
+            counter++;
         }
     }
+    
+    @endforeach
 </script>
 @endsection

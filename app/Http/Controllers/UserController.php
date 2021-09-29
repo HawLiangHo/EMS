@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\AssistantNotificationMail;
 use App\Models\User;
 use App\Models\Events;
+use App\Models\Checkout;
 use App\Notifications\AdminCreatedNotification;
 use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
@@ -116,12 +117,11 @@ class UserController extends Controller
         return view('addUsers', ['events' => $events]);
     }
 
-    public function deleteAssistant($id){
-        $assistant = User::find($id);
-        $events = Events::findOrFail($assistant->assistantEvents);
-        $assistant->assistantEvents()->detach($id);
+    public function deleteAssistant($eventID, $id){
+        $event = Events::findOrFail($eventID);
+        $event->assistants()->detach($id);
 
-        return view('manageUsers', [ 'events' => $events]);
+        return view('manageUsers', [ 'events' => $event]);
         
     }
 
@@ -189,6 +189,20 @@ class UserController extends Controller
         $users = DB::select('SELECT * FROM users WHERE id = '.Auth::id().'');
 
         return view('myTickets',['users' => $users[0]]);
+    }
+
+    public function viewTicket($id){
+        $checkout = Checkout::findOrFail($id);
+
+        return view('viewMyTicket',['checkout' => $checkout ]);
+    }
+
+    public function deleteRegisteredTicket($id){
+        $checkout = Checkout::findOrFail($id);
+        $checkout->delete($id);
+
+        return view('myTickets');
+        
     }
 
 }

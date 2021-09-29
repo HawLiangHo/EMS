@@ -11,7 +11,7 @@
 @section("sidebar")
 <!-- LEFT SIDEBAR -->
 	@auth
-	@if (Auth::user()->isAdmin())
+	@if (Auth::user()->isAdmin() | Auth::user()->isAssistant())
 	<div id="sidebar-nav" class="sidebar">
 		<div class="sidebar-scroll">
 			<nav>
@@ -48,7 +48,8 @@
                                     <input id="username" type="text" 
                                     class="form-control @error('name') is-invalid @enderror" name="username" 
                                     value="{{ old('username',$assistants->username) }}" required autocomplete="username" autofocus 
-                                    placeholder="e.g. Adam Smith">
+                                    placeholder="e.g. Adam Smith"
+                                    @if ($events->publish_status == "Published") readonly @endif>
 
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -64,7 +65,8 @@
                                 <div class="col-md-6">
                                     <input id="email" type="email" 
                                     class="form-control @error('email') is-invalid @enderror" name="email" 
-                                    value="{{ old('email',$assistants->email) }}" required autocomplete="email" placeholder="e.g. adamsmith@gmail.com">
+                                    value="{{ old('email',$assistants->email) }}" required autocomplete="email" placeholder="e.g. adamsmith@gmail.com"
+                                    @if ($events->publish_status == "Published") readonly @endif>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -80,7 +82,8 @@
                                 <div class="col-md-6">
                                     <input id="phone" type="text" 
                                     class="form-control @error('phone') is-invalid @enderror" name="phone" 
-                                    value="{{ old('phone',$assistants->phone) }}" placeholder="e.g. 012-3456789">
+                                    value="{{ old('phone',$assistants->phone) }}" placeholder="e.g. 012-3456789"
+                                    @if ($events->publish_status == "Published") readonly @endif>
 
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
@@ -97,9 +100,11 @@
                             {{-- Submit --}}
                             <div class="form-group row mb-0">
                                 <div class="col-md-12 offset-md-4">
-                                    <button type="submit" class="btn btn-primary" value="Register">
-                                        {{ __('Update details') }}
-                                    </button>
+                                    @if ($events->publish_status != "Published")
+                                        <button type="submit" class="btn btn-primary" value="Register">
+                                            {{ __('Update details') }}
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </form>
