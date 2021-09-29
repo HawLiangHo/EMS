@@ -74,7 +74,7 @@
                     <div class="form-group row mb-0">
                         <div class="col-md-12 offset-md-4" >
                             <button class="btn btn-default" onclick="download()" style="margin-left: 400px;">
-                                {{ __('Download Ticket') }}
+                                {{ __('Download Ticket') }}&nbsp&nbsp<i class="lnr lnr-download"></i>
                             </button>
                         </div>
                     </div>

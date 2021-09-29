@@ -320,7 +320,7 @@ class EventController extends Controller
                     $this->validate(
                         $request,[
                             'amount' => 'numeric|min:5|max:1500',
-                            'ccn' => 'max:19',
+                            'ccn' => 'max:19', 
                     ]);
                 }
                 
