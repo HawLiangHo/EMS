@@ -282,9 +282,9 @@ class EventController extends Controller
         $startDate = $event->created_at;
         $endDate = new Carbon($event->end_date . " " . $event->end_time);
 
-        // group checkouts into year|weekOfYear and ticket name
+        // group checkouts into year|weekOfYear and ticket type
         $xLabel = [];
-        $ticketsLabel = $event->tickets->pluck("name");
+        $ticketsLabel = $event->tickets->pluck("type");
         $copyStartDate = $startDate->copy();
         while ($copyStartDate <= $endDate) {
             $startDateOfWeek = $copyStartDate->copy()->startOfWeek();
@@ -317,7 +317,7 @@ class EventController extends Controller
             return $checkout->created_at >= $startDate && $checkout->created_at <= $endDate;
         })->groupBy([
             function ($checkout) {
-                return $checkout->ticket->name;
+                return $checkout->ticket->type;
             },
             function ($checkout) {
                 return $checkout->created_at->year . "|" . $checkout->created_at->weekOfYear;
@@ -389,11 +389,6 @@ class EventController extends Controller
             $totalTicket += array_sum($priceArr);
         }
 
-
-        // sum all the tickets sold
-        $ticketSold = $event->tickets->sum(function ($ticket) {
-            return $ticket->quantity - $ticket->quantity_left;
-        });
         // sum all the tickets available
         $ticketsAvailable = $event->tickets->sum(function ($ticket) {
             return $ticket->quantity;
@@ -437,7 +432,6 @@ class EventController extends Controller
             "totalRevenue" => $totalRevenue,
             "totalTickets" => $totalTickets,
             "totalTicket" => $totalTicket,
-            "ticketSold" => $ticketSold,
             "ticketsAvailable" => $ticketsAvailable,
             "pageVisited" => $pageVisited,
             "totalVisited" => $totalVisited,
