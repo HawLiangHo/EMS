@@ -31,7 +31,6 @@
                                             @foreach ($events->tickets as $ticket)
                                             <tr>
                                                 <td>
-                                                    <p class="text-md text-dark font-weight-bold mb-0" id="name"><b>{{  $ticket->name }}</b></p>
                                                     <p class="text-md text-dark font-weight-bold mb-0">{{  $ticket->type }}</p>
                                                     @if($ticket->price == 0)
                                                     <p class="text-md text-dark font-weight-bold mb-0" id="price">Free</p>
@@ -109,7 +108,7 @@
 
                 var showDetail = document.getElementById('showDetail' + {{ $ticket->id }});
                 showDetail.innerHTML ="<div style='overflow: hidden;'>"
-                + "<p style='text-align: left; float: left;'>" + quantity + " x " + "{{ $ticket->name }}" +"</p>"
+                + "<p style='text-align: left; float: left;'>" + quantity + " x " + "{{ $ticket->type }}" +"</p>"
                 + "<p style='text-align: right; float: right;'>RM " + Number(subprice1).toFixed(2) + "</p>"
                 + "</div>";
                 // showDetail.innerHTML = quantity + " x " + "{{ $ticket->name }}" + " = " + subprice1;

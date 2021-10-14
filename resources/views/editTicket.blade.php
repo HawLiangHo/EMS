@@ -44,40 +44,22 @@
                         <form method="POST" action="{{ route('editTicket',['id'=>$events->id, 'ticket_id'=>$tickets->id]) }}">
                             @csrf
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right required">{{ __('Ticket Name') }}</label>
-
-                                <div class="col-md-4">
-                                    <input id="name" type="text" 
-                                    class="form-control @error('name') is-invalid @enderror" name="name" 
-                                    value="{{ old('name',$tickets->name) }}" required autocomplete="name" autofocus 
-                                    placeholder="Enter ticket name..." 
-                                    @if ($events->publish_status == "Published") readonly @endif>
-                                    
-
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="type" class="col-md-4 col-form-label text-md-right required">{{ __('Ticket Type') }}</label>
-
-                                
+                                @php
+                                $checkTickets = $events->tickets->pluck("type")->toArray();
+                                @endphp
                                 <div class="col-md-4">
                                 @if ($events->publish_status != "Published")
                                     <select id="type" name="type" class="form-control">
                                         <option value="null" disabled selected>Ticket Type</option>
-                                        <option value="General Admission" @if($tickets->type == "General Admission") selected=selected; @endif>General Admission</option>
-                                        <option value="Participant/Attendee" @if($tickets->type == "Participant") selected=selected; @endif>Participant/Attendee</option>
-                                        <option value="Speaker" @if($tickets->type == "Speaker") selected=selected; @endif>Speaker</option>
-                                        <option value="Exhibitor" @if($tickets->type == "Exhibitor") selected=selected; @endif>Exhibitor</option>
-                                        <option value="Vendor" @if($tickets->type == "Vendor") selected=selected; @endif>Vendor</option>
-                                        <option value="VIP">VIP</option>
-                                        <option value="Student">Student</option>
-                                        <option value="Other">Other</option>
+                                        <option value="General Admission" @if($tickets->type == "General Admission") selected=selected; @endif @if (in_array("General Admission", $checkTickets)) disabled @endif>General Admission</option>
+                                        <option value="Participant/Attendee" @if($tickets->type == "Participant/Attendee") selected=selected; @endif @if (in_array("Participant/Attendee", $checkTickets)) disabled @endif>Participant/Attendee</option>
+                                        <option value="Speaker" @if($tickets->type == "Speaker") selected=selected; @endif @if (in_array("Speaker", $checkTickets)) disabled @endif>Speaker</option>
+                                        <option value="Exhibitor" @if($tickets->type == "Exhibitor") selected=selected; @endif @if (in_array("Exhibitor", $checkTickets)) disabled @endif>Exhibitor</option>
+                                        <option value="Vendor" @if($tickets->type == "Vendor") selected=selected; @endif @if (in_array("Vendor", $checkTickets)) disabled @endif>Vendor</option>
+                                        <option value="VIP" @if($tickets->type == "VIP") selected=selected; @endif @if (in_array("VIP", $checkTickets)) disabled @endif>VIP</option>
+                                        <option value="Student" @if($tickets->type == "Student") selected=selected; @endif @if (in_array("Student", $checkTickets)) disabled @endif>Student</option>
+                                        <option value="Other" @if($tickets->type == "Other") selected=selected; @endif @if (in_array("Other", $checkTickets)) disabled @endif>Other</option>
                                     </select>
                                     @error('type')
                                         <span class="invalid-feedback" role="alert">

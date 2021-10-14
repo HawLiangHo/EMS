@@ -26,13 +26,13 @@
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7" width="200px" style="text-align: center">
                                             Event Name
                                         </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
-                                            Ticket Name
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" width="100px" style="text-align: center">
+                                            Event Date
                                         </th>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
                                             Ticket Type
                                         </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" width="200px" style="text-align: center">
                                             Purchased Quantity
                                         </th>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
@@ -57,7 +57,7 @@
                                             <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $checkout->ticket->event->title }}</p>
                                         </td>
                                         <td>
-                                            <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $checkout->ticket->name }}</p>
+                                            <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $checkout->ticket->event->start_date }}</p>
                                         </td>
                                         <td>
                                             <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $checkout->ticket->type }}</p>
@@ -70,7 +70,7 @@
                                             @if ($checkout->validity == 1)
                                                 Valid
                                             @elseif ($checkout->validity == 0)
-                                                Overdue
+                                                Expired
                                             @endif
                                             </p>
                                         </td>
@@ -78,16 +78,15 @@
                                             <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">RM {{  number_format($checkout->total_price, 2) }}</p>
                                         </td>
                                         <td class="align-middle text-center">
-                                            {{-- <a class="lnr lnr-eye btn-stock-action" onclick="showTicket('{{  $checkout->ticket->event->title }}','{{ $checkout->ticket->name }}','{{  $checkout->ticket->type }}','{{  $checkout->quantity }}','{{  $checkout->ticket->link}}')" style="color: orange; font-size: 25px;"></a> --}}
                                             <a href="{{ route('viewMyTicket', ['id' => $checkout->id]) }}">    
                                                 <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>                                                    
                                             </a>
-                                            <a class="lnr lnr-trash btn-stock-action deleteRegisteredTicket" style="color: orange; font-size: 25px;" id="{{ $checkout->id }}" value="{{ $checkout->ticket->name }}"></a>
+                                            <a class="lnr lnr-trash btn-stock-action deleteRegisteredTicket" style="color: orange; font-size: 25px;" id="{{ $checkout->id }}" value="{{ $checkout->ticket->type }}"></a>
                                         </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="6" style="text-align: center; padding-left: 100px; padding-top: 30px;">You have yet to register any events!</td>
+                                        <td colspan="8" style="text-align: center; padding-top: 50px;">You have yet to register any events!</td>
                                     </tr>
                                     @endforelse                                  
                                 </tbody>

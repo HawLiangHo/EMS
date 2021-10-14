@@ -41,7 +41,6 @@ class TicketController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|max:255',
                 'type' => 'required',
                 'quantity' => 'required|numeric|min:1|max:1000',
                 'price' => 'required|numeric|min:0|max:1000',
@@ -50,7 +49,6 @@ class TicketController extends Controller
         
         $ticket = new Tickets();
         $ticket->event_id = $id;
-        $ticket->name = request('name');
         $ticket->type = request('type');
         $ticket->quantity = request('quantity');
         $ticket->quantity_left = request('quantity');
@@ -72,7 +70,6 @@ class TicketController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|max:255',
                 'type' => 'required',
                 'quantity' => 'required|numeric|min:1|max:1000',
                 'price' => 'required|numeric|min:0|max:1000',
@@ -80,7 +77,6 @@ class TicketController extends Controller
             ]);
         
         $ticket = Tickets::find($ticket_id);
-        $ticket->name = request('name');
         $ticket->type = request('type');
         $ticket->quantity = request('quantity');
         $ticket->quantity_left = request('quantity');

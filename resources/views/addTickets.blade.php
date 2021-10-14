@@ -44,36 +44,21 @@
                         <form method="POST" action="{{ route('addTickets',['id'=>$events->id]) }}">
                             @csrf
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right required">{{ __('Ticket Name') }}</label>
-
-                                <div class="col-md-4">
-                                    <input id="name" type="text" 
-                                    class="form-control @error('name') is-invalid @enderror" name="name" 
-                                    value="{{ old('name') }}" required autocomplete="name" autofocus 
-                                    placeholder="Enter ticket name...">
-
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="type" class="col-md-4 col-form-label text-md-right required">{{ __('Ticket Type') }}</label>
-
+                                @php
+                                    $tickets = $events->tickets->pluck("type")->toArray();
+                                @endphp
                                 <div class="col-md-4">
                                     <select id="type" name="type" class="form-control">
                                         <option value="null" disabled selected>Ticket Type</option>
-                                        <option value="General Admission">General Admission</option>
-                                        <option value="Participant">Participant/Attendee</option>
-                                        <option value="Speaker">Speaker</option>
-                                        <option value="Exhibitor">Exhibitor</option>
-                                        <option value="Vendor">Vendor</option>
-                                        <option value="VIP">VIP</option>
-                                        <option value="Student">Student</option>
-                                        <option value="Other">Other</option>
+                                        <option value="General Admission" @if (in_array("General Admission", $tickets)) disabled @endif>General Admission</option>
+                                        <option value="Participant/Attendee" @if (in_array("Participant/Attendee", $tickets)) disabled @endif>Participant/Attendee</option>
+                                        <option value="Speaker" @if (in_array("Speaker", $tickets)) disabled @endif>Speaker</option>
+                                        <option value="Exhibitor" @if (in_array("Exhibitor", $tickets)) disabled @endif>Exhibitor</option>
+                                        <option value="Vendor" @if (in_array("Vendor", $tickets)) disabled @endif>Vendor</option>
+                                        <option value="VIP" @if (in_array("VIP", $tickets)) disabled @endif>VIP</option>
+                                        <option value="Student" @if (in_array("Student", $tickets)) disabled @endif>Student</option>
+                                        <option value="Other" @if (in_array("Other", $tickets)) disabled @endif>Other</option>
                                     </select>
                                     @error('type')
                                         <span class="invalid-feedback" role="alert">
@@ -99,6 +84,12 @@
                                         </span>
                                     @enderror
                                 </div>
+                                <div class="col-md-3" style="margin-top: 5px;">
+                                    @php
+                                        $maximum = $events->num_of_participant - $ticketCount;
+                                    @endphp
+                                    <p style="color: red;">* Remaining Quantity : {{ $maximum }}</p>
+                                </div>
                             </div>
 
                             <div class="form-group row">
@@ -115,8 +106,13 @@
                                         </span>
                                     @enderror
                                 </div>
+                                <div class="col-md-5" style="margin-top: 5px;">
+                                    @php
+                                        $maximum = $events->num_of_participant - $ticketCount;
+                                    @endphp
+                                    <p style="color: red;">* Price Range Allowed : RM0.00 - RM1000.00</p>
+                                </div>
                             </div>
-                            {{-- dd({{ $ticketCount }}) --}}
                             <div class="form-group row">
                                 <label for="link" class="col-md-4 col-form-label text-md-right required">{{ __('Attach Link') }}</label>
 

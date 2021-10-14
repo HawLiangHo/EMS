@@ -48,7 +48,7 @@
                                         <td>
                                             <br>
                                             <p class="text-md text-dark font-weight-bold mb-0" id="name" style="padding-left: 20px;"><b>{{  $ticket->get("ticket")->event->title }}</b></p>
-                                            <p class="text-md text-dark font-weight-bold mb-0" id="name" style="padding-left: 20px;"><b>{{  $ticket->get("ticket")->name }}</b></p>
+                                            <p class="text-md text-dark font-weight-bold mb-0" id="name" style="padding-left: 20px;"><b>{{  $ticket->get("ticket")->type }}</b></p>
                                             <p class="text-md text-dark font-weight-bold mb-0" style="padding-left: 20px;">{{  $ticket->get("ticket")->type }}</p>
                                             <br>
                                         </td>

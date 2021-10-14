@@ -54,17 +54,17 @@ class DatabaseSeeder extends Seeder
             'type' => 'Virtual Event',
             'venue_name' => 'Zoom',
             'venue_address' => '',
-            'start_date' => '2021-10-01',
-            'end_date' => '2021-10-10',
+            'start_date' => '2021-10-21',
+            'end_date' => '2021-10-23',
             'start_time' => '09:30:00',
             'end_time' => '10:30:00',
-            'registration_start_date' => '2021-10-01',
-            'registration_end_date' => '2021-10-09',
+            'registration_start_date' => '2021-10-21',
+            'registration_end_date' => '2021-10-23',
             'num_of_participant' => 30,
             'remaining_num_of_participant' => 30,
             'publish_status' => "Not published",
             'event_status' => "Pending",
-            'created_at' => '2021-09-14 09:14:05',
+            'created_at' => '2021-09-21 09:14:05',
             'updated_at' => '2021-09-14 09:14:05',
             'cover_image' => file_get_contents("public\assets\img\cover3.jpg")
         ));
@@ -100,7 +100,6 @@ class DatabaseSeeder extends Seeder
 
         DB::table('tickets')->insert(array(
             'event_id' => 1,
-            'name' => "General Attendee",
             'type' => "General Admission",
             'quantity' => 20,
             'quantity_left' => 20,
@@ -110,8 +109,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('tickets')->insert(array(
             'event_id' => 1,
-            'name' => "Late Birds Attendee",
-            'type' => "General Admission",
+            'type' => "Participant",
             'quantity' => 10,
             'quantity_left' => 10,
             'price' => 5,
@@ -120,13 +118,30 @@ class DatabaseSeeder extends Seeder
 
         DB::table('tickets')->insert(array(
             'event_id' => 2,
-            'name' => "General Attendee",
             'type' => "General Admission",
             'quantity' => 10,
             'quantity_left' => 10,
             'price' => 5,
             'link' => "https://meet.google.com",
         ));
+
+        // DB::table('checkouts')->insert(array(
+        //     'user_id' => 2,
+        //     'ticket_id'=> 1,
+        //     'quantity' => 2,
+        //     'total_price' => 2,
+        //     'validity' => 1,
+        //     'status' => 1
+        // ));
+
+        // DB::table('checkouts')->insert(array(
+        //     'user_id' => 2,
+        //     'ticket_id'=> 2,
+        //     'quantity' => 1,
+        //     'total_price' => 5,
+        //     'validity' => 1,
+        //     'status' => 1
+        // ));
 
         $event = Events::find(1);
         $event->users()->attach([1,2]);

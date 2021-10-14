@@ -17,7 +17,6 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('event_id');
-            $table->string('name');
             $table->string('type');
             $table->integer('quantity');
             $table->integer('quantity_left');

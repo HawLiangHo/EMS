@@ -59,10 +59,7 @@
                                         No.
                                     </th>
                                     <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
-                                        Tickets Name
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
-                                        Type
+                                        Ticket Type
                                     </th>
                                     <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
                                         Quantity
@@ -80,9 +77,6 @@
                                 <tr>
                                     <td class="align-middle text-md" style="padding-left: 25px">
                                         <h6 class="mb-0" style="text-align: center">{{ $loop->iteration }}</h6>
-                                    </td>
-                                    <td>
-                                        <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $ticket->name }}</p>
                                     </td>
                                     <td>
                                         <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $ticket->type }}</p>
@@ -104,7 +98,7 @@
                                         <a href="{{ route('editTicket', ['id' => $events->id, 'ticket_id' =>$ticket->id]) }}">
                                             <i class="lnr lnr-pencil btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                         </a>
-                                        <a class="lnr lnr-trash btn-stock-action deleteTicket" style="color: orange; font-size: 25px;" id="{{ $ticket->id }}" value="{{ $ticket->name }}"></a>
+                                        <a class="lnr lnr-trash btn-stock-action deleteTicket" style="color: orange; font-size: 25px;" id="{{ $ticket->id }}" value="{{ $ticket->type }}"></a>
                                         @else
                                         <a href="{{ route('editTicket', ['id' => $events->id, 'ticket_id' =>$ticket->id]) }}">
                                             <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>

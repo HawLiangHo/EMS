@@ -40,15 +40,7 @@
                                     </tr>
                                     <tr>
                                         <td class="align-middle text-md" style="border: 0;" >
-                                            <h3 class="mb-0" style="text-align: center"><br>{{ $checkout->ticket->name }}</h3>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle text-md" style="border: 0;" >
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="align-middle text-md" style="border: 0;" >
+                                            <h4 class="mb-0" style="text-align: center"><b>Ticket Type:</b></h4>
                                             <h4 class="mb-0" style="text-align: center"><br>{{ $checkout->ticket->type }}</h4>
                                         </td>
                                     </tr>
@@ -58,8 +50,13 @@
                                     </tr>
                                     <tr>
                                         <td class="align-middle text-md" style="border: 0;" >
-                                            <h4 class="mb-0" style="text-align: center">Ticket Purchased Quantity: {{ $checkout->quantity }}</h4>
-                                            <br><br>
+                                            <h4 class="mb-0" style="text-align: center"><b>Purchased Quantity:</b></h4>
+                                            <h4 class="mb-0" style="text-align: center">{{ $checkout->quantity }} Pax</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle text-md" style="border: 0;" >
+                                            <br><br><br><br><br><br>
                                         </td>
                                     </tr>
                                     <tr>
