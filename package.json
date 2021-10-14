@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "chartist-plugin-legend": "^0.6.2",
         "leaflet-geosearch": "^3.5.0",
         "sweetalert2": "^11.1.4"
     }

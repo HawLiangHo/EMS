@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<div class="event-content-myTickets">
+<div class="event-content-viewMyTickets">
 	<div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10">

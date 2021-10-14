@@ -12,7 +12,7 @@
 <div class="event-content-myTickets">
 	<div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="panel panel-headline">
                     <div class="panel-heading">
                         <h3 style="text-align: center;">Tickets</h3>
@@ -36,15 +36,19 @@
                                             Purchased Quantity
                                         </th>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
+                                            Validity
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" style="text-align: center">
                                             Total Price (RM)
                                         </th>
-                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" width="100px">
                                             Action
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse (Auth::user()->checkouts as $checkout)
+                                    @continue($checkout->status == 0)
                                     <tr>
                                         <td class="align-middle text-md" style="padding-left: 25px">
                                             <h6 class="mb-0" style="text-align: center">{{ $loop->iteration }}</h6>
@@ -60,6 +64,15 @@
                                         </td>
                                         <td>
                                             <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">{{  $checkout->quantity }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">
+                                            @if ($checkout->validity == 1)
+                                                Valid
+                                            @elseif ($checkout->validity == 0)
+                                                Overdue
+                                            @endif
+                                            </p>
                                         </td>
                                         <td>
                                             <p class="text-md text-dark font-weight-bold mb-0" style="text-align: center">RM {{  number_format($checkout->total_price, 2) }}</p>

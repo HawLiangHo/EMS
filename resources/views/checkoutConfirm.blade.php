@@ -203,28 +203,6 @@
 @endsection
 
 @section('script')
-{{-- <script>
-    var updateTotal = document.getElementById('updateTotal');
-    var subPrice = new Array();
-
-    @foreach (Auth::user()->checkouts as $checkout)
-        
-        subPrice[{{ $loop->iteration }}] = {{ $checkout->total_price }};
-
-        var allPrices = subPrice[{{ $loop->iteration }}];
-    @endforeach
-
-    var totalPrice = 0.0;
-    for (let index = 1; index < subPrice.length; index++) {
-        if(subPrice[index] > 0){
-            const element = subPrice[index];
-            totalPrice += element;
-        }
-    }
-
-    updateTotal.innerHTML = "Total: &nbsp RM " + Number(totalPrice).toFixed(2);
-
-</script> --}}
 <script>
     $('.creditCardText').keyup(function() {
         var foo = $(this).val().split("-").join(""); // remove hyphens

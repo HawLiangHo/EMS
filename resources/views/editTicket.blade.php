@@ -16,12 +16,15 @@
 		<div class="sidebar-scroll">
 			<nav>
 				<ul class="nav">
-                    <li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
+					<li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
 					<li><a href="{{ route('manageTickets', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
-					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>User Management</span></a></li>
-					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
                     <li><a href="{{ route('publishEvent', ['id' => $events->id]) }}" class=""><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
-                </ul>
+				</ul>
+				<h3 style="font-size: 20px; border-bottom: 3px solid #676A6B"></h3>
+				<ul class="nav">
+					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
+					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>Manage Assistant</span></a></li>
+				</ul>
 			</nav>
 		</div>
 	</div>
@@ -110,10 +113,9 @@
                                 <label for="price" class="col-md-4 col-form-label text-md-right required">{{ __('Set Price (RM)') }}</label>
 
                                 <div class="col-md-2">
-                                    <input id="price" type="text" name="price" class="form-control"
-                                    maxlength="4" min="0" max="1000" value="{{ old('price',$tickets->price) }}"
-                                    placeholder="0.00" 
-                                    oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                                    <input id="price" type="number" name="price" class="form-control"
+                                    maxlength="4" step="0.01" min="0.00" max="1000.00" value="{{ old('price',$tickets->price) }}"
+                                    placeholder="0.00"
                                     @if ($events->publish_status == "Published") readonly @endif>
 
                                     @error('price')

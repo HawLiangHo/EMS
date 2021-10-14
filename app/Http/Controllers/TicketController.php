@@ -13,14 +13,28 @@ class TicketController extends Controller
     public function manageTickets($id){
         $events = Events::findOrFail($id);
         $tickets = Tickets::all()->where('event_id', $id);
+        $ticketCount = 0;
+        foreach($tickets as $ticket){
+            
+            if($ticket != null){
+                $ticketCount += $ticket->quantity;
+            }
+        }
 
-        return view('manageTickets', ['tickets' => $tickets, 'events' => $events]);
+        return view('manageTickets', ['tickets' => $tickets, 'events' => $events, 'ticketCount' => $ticketCount]);
     }
 
     public function addTicketsPage($id){
         $events = Events::findOrFail($id);
+        $tickets = Tickets::all()->where('event_id', $id);
+        $ticketCount = 0;
+        foreach($tickets as $ticket){
+            if($ticket != null){
+                $ticketCount += $ticket->quantity;
+            }
+        }
 
-        return view('addTickets', ['events' => $events]);
+        return view('addTickets', ['events' => $events, 'ticketCount' => $ticketCount]);
     }
 
     public function saveTicket(Request $request, $id){
@@ -62,6 +76,7 @@ class TicketController extends Controller
                 'type' => 'required',
                 'quantity' => 'required|numeric|min:1|max:1000',
                 'price' => 'required|numeric|min:0|max:1000',
+                'link' => 'max:255'
             ]);
         
         $ticket = Tickets::find($ticket_id);
@@ -70,6 +85,7 @@ class TicketController extends Controller
         $ticket->quantity = request('quantity');
         $ticket->quantity_left = request('quantity');
         $ticket->price = request('price');
+        $ticket->link = request('link');
         $ticket->save();
 
         return redirect()->route('manageTickets', ['id'=>$id])->with('message', 'Ticket updated successfully');
@@ -80,7 +96,15 @@ class TicketController extends Controller
         $ticket = Tickets::findOrFail($id);
         $ticket->delete($id);
 
-        return view('manageTickets', [ 'events' => $event]);
+        $tickets = Tickets::all()->where('event_id', $eventID);
+        $ticketCount = 0;
+        foreach($tickets as $ticket){
+            if($ticket != null){
+                $ticketCount += $ticket->quantity;
+            }
+        }
+        
+        return view('manageTickets', [ 'events' => $event, 'tickets' => $tickets, 'ticketCount' => $ticketCount]);
         
     }
 

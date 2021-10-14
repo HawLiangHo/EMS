@@ -19,7 +19,8 @@ class CreateCheckoutsTable extends Migration
             $table->integer('ticket_id');
             $table->integer('quantity');
             $table->double('total_price');
-            $table->string('paid_status');
+            $table->integer('validity');
+            $table->integer('status');
             $table->timestamps();
         });
     }

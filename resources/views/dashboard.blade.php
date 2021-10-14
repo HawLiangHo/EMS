@@ -16,11 +16,14 @@
 		<div class="sidebar-scroll">
 			<nav>
 				<ul class="nav">
-					<li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
-					<li><a href="{{ route('manageTickets', ['id' => $events->id]) }}" class=""><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
-					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>User Management</span></a></li>
-					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
-                    <li><a href="{{ route('publishEvent', ['id' => $events->id]) }}" class=""><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
+					<li><a href="{{ route('eventDetails', ['id' => $event->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
+					<li><a href="{{ route('manageTickets', ['id' => $event->id]) }}" class=""><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
+                    <li><a href="{{ route('publishEvent', ['id' => $event->id]) }}" class=""><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
+				</ul>
+				<h3 style="font-size: 20px; border-bottom: 3px solid #676A6B"></h3>
+				<ul class="nav">
+					<li><a href="{{ route('dashboard', ['id' => $event->id]) }}" class="active"><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
+					<li><a href="{{ route('manageUsers', ['id' => $event->id]) }}" class=""><i class="lnr lnr-users"></i> <span>Manage Assistant</span></a></li>
 				</ul>
 			</nav>
 		</div>
@@ -36,13 +39,132 @@
 		<!-- OVERVIEW -->
 		<div class="panel panel-headline">
 			<div class="panel-heading">
-				<h3 class="panel-title">Weekly Overview</h3>
-				<p class="panel-subtitle">Period: Oct 14, 2016 - Oct 21, 2016</p>
+				<h1><strong>Event Dashboard</strong></h1>
+				<h3 style="font-size: 20px; border-bottom: 1px solid #676A6B"></h3>
+				{{-- <p class="panel-subtitle">Period: Oct 14, 2016 - Oct 21, 2016</p> --}}
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-8">
+						<div class="panel">
+							<div class="panel-heading">
+								<h3 class="panel-title">Event Participation Rate</h3>
+								<div class="right">
+									{{-- <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+									<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button> --}}
+								</div>
+							</div>
+							<div class="panel-body">
+								<div id="system-load" class="easy-pie-chart" data-percent="70">
+									@if($totalTicket != 0 && $ticketsAvailable != 0)
+										<span class="percent">{{ number_format($totalTicket / $ticketsAvailable * 100, 2) }}</span>
+									@else
+										<span class="percent">0</span>
+									@endif
+								</div>
+								{{-- <h4>CPU Load</h4>
+								<ul class="list-unstyled list-justify">
+									<li>High: <span>95%</span></li>
+									<li>Average: <span>87%</span></li>
+									<li>Low: <span>20%</span></li>
+									<li>Threads: <span>996</span></li>
+									<li>Processes: <span>259</span></li>
+								</ul> --}}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
 						<div class="metric">
+							<span class="icon"><i class="fa fa-ticket"></i></span>
+							<p>
+								<span class="number">{{ $totalTicket }}</span>
+								<span class="title">Number of Ticket Sales</span>
+							</p>
+						</div>
+						<div class="metric">
+							<span class="icon"><i class="fa fa-eye"></i></span>
+							<p>
+								<span class="number">{{ $totalVisited }}</span>
+								<span class="title">Page Visits</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel">
+							<div class="panel-heading">
+								<h3 class="panel-title"><strong>General Details</strong></h3>
+								<div class="left">
+									<h4>Event &nbsp - &nbsp {{ $event->title }}</h4>	
+								</div>
+							</div>
+							<h3 style="font-size: 20px; border-bottom: 1px solid #676A6B; margin-left: 20px; margin-right: 20px;"></h3>
+							<div class="panel-body">
+								<div class="col-md-6">
+									<h4><b>Event Type:</b></h4>
+									<p>{{ $event->type }}</p>
+								</div>
+								<div class="col-md-6">
+									<h4><b>Event Category:</b></h4>
+									<p>{{ $event->category }}</p>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="col-md-6">
+									<h4><b>Event Publication Status:</b></h4>
+									<p>{{ $event->publish_status }}</p>
+								</div>
+								<div class="col-md-6">
+									<h4><b>Event Available Status:</b></h4>
+									<p>{{ $event->event_status }}</p>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="col-md-6">
+									<h4><b>Event Start and End Date:</b></h4>
+									<p>{{ date('d/m/Y', strtotime($event->start_date)) }}, {{ date('H:i A', strtotime($event->start_time)) }} - {{ date('d/m/Y', strtotime($event->end_date)) }}, {{ date('H:i A', strtotime($event->end_time)) }}</p>
+								</div>
+								<div class="col-md-6">
+									<h4><b>Event Registration Start and End Date:</b></h4>
+									<p>{{ date('d/m/Y', strtotime($event->registration_start_date)) }}, {{ date('H:i A', strtotime($event->registration_start_time)) }} - {{ date('d/m/Y', strtotime($event->registration_end_date)) }}, {{ date('H:i A', strtotime($event->registration_end_time)) }}</p>
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="col-md-6">
+									<h4><b>Targeted Number of Participants:</b></h4>
+									<p>{{ $event->num_of_participant }} Participant(s)</p>
+								</div>
+								<div class="col-md-6">
+									<h4><b>Actual Number of Participants:</b></h4>
+									<p>{{ $totalTicket }} Participant(s)</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END OVERVIEW -->
+		<div class="row">
+			<div class="col-md-12">
+				<!-- MULTI CHARTS -->
+				{{-- <div class="panel">
+					<div class="panel-heading">
+						<h3 class="panel-title" style="text-align: center;">Page Visit Statistics</h3>
+						<div class="right">
+							<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+							<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div id="visits-trends-chart" class="ct-chart" style="position: relative"></div>
+					</div>
+				</div> --}}
+				<!-- END MULTI CHARTS -->
+				<div class="row">
+					<div class="col-md-3">
+						{{-- <div class="metric">
 							<span class="icon"><i class="fa fa-download"></i></span>
 							<p>
 								<span class="number">1,252</span>
@@ -76,274 +198,26 @@
 								<span class="title">Conversions</span>
 							</p>
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-9">
-						<div id="headline-chart" class="ct-chart"></div>
-					</div>
-					<div class="col-md-3">
-						<div class="weekly-summary text-right">
-							<span class="number">2,315</span> <span class="percentage"><i class="fa fa-caret-up text-success"></i> 12%</span>
-							<span class="info-label">Total Sales</span>
-						</div>
-						<div class="weekly-summary text-right">
-							<span class="number">$5,758</span> <span class="percentage"><i class="fa fa-caret-up text-success"></i> 23%</span>
-							<span class="info-label">Monthly Income</span>
-						</div>
-						<div class="weekly-summary text-right">
-							<span class="number">$65,938</span> <span class="percentage"><i class="fa fa-caret-down text-danger"></i> 8%</span>
-							<span class="info-label">Total Income</span>
-						</div>
-					</div>
+					</div> --}}
 				</div>
 			</div>
-		</div>
-		<!-- END OVERVIEW -->
-		<div class="row">
-			<div class="col-md-6">
-				<!-- RECENT PURCHASES -->
-				<div class="panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">Recent Purchases</h3>
-						<div class="right">
-							<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-							<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
-						</div>
-					</div>
-					<div class="panel-body no-padding">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th>Order No.</th>
-									<th>Name</th>
-									<th>Amount</th>
-									<th>Date &amp; Time</th>
-									<th>Status</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><a href="#">763648</a></td>
-									<td>Steve</td>
-									<td>$122</td>
-									<td>Oct 21, 2016</td>
-									<td><span class="label label-success">COMPLETED</span></td>
-								</tr>
-								<tr>
-									<td><a href="#">763649</a></td>
-									<td>Amber</td>
-									<td>$62</td>
-									<td>Oct 21, 2016</td>
-									<td><span class="label label-warning">PENDING</span></td>
-								</tr>
-								<tr>
-									<td><a href="#">763650</a></td>
-									<td>Michael</td>
-									<td>$34</td>
-									<td>Oct 18, 2016</td>
-									<td><span class="label label-danger">FAILED</span></td>
-								</tr>
-								<tr>
-									<td><a href="#">763651</a></td>
-									<td>Roger</td>
-									<td>$186</td>
-									<td>Oct 17, 2016</td>
-									<td><span class="label label-success">SUCCESS</span></td>
-								</tr>
-								<tr>
-									<td><a href="#">763652</a></td>
-									<td>Smith</td>
-									<td>$362</td>
-									<td>Oct 16, 2016</td>
-									<td><span class="label label-success">SUCCESS</span></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="panel-footer">
-						<div class="row">
-							<div class="col-md-6"><span class="panel-note"><i class="fa fa-clock-o"></i> Last 24 hours</span></div>
-							<div class="col-md-6 text-right"><a href="#" class="btn btn-primary">View All Purchases</a></div>
-						</div>
-					</div>
-				</div>
-				<!-- END RECENT PURCHASES -->
-			</div>
-			<div class="col-md-6">
-				<!-- MULTI CHARTS -->
-				<div class="panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">Projection vs. Realization</h3>
-						<div class="right">
-							<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-							<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
-						</div>
-					</div>
-					<div class="panel-body">
-						<div id="visits-trends-chart" class="ct-chart"></div>
-					</div>
-				</div>
-				<!-- END MULTI CHARTS -->
-			</div>
+
 		</div>
 		<div class="row">
 			<div class="col-md-7">
-				<!-- TODO LIST -->
-				<div class="panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">To-Do List</h3>
-						<div class="right">
-							<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-							<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
-						</div>
-					</div>
-					<div class="panel-body">
-						<ul class="list-unstyled todo-list">
-							<li>
-								<label class="control-inline fancy-checkbox">
-									<input type="checkbox"><span></span>
-								</label>
-								<p>
-									<span class="title">Restart Server</span>
-									<span class="short-description">Dynamically integrate client-centric technologies without cooperative resources.</span>
-									<span class="date">Oct 9, 2016</span>
-								</p>
-								<div class="controls">
-									<a href="#"><i class="icon-software icon-software-pencil"></i></a> <a href="#"><i class="icon-arrows icon-arrows-circle-remove"></i></a>
-								</div>
-							</li>
-							<li>
-								<label class="control-inline fancy-checkbox">
-									<input type="checkbox"><span></span>
-								</label>
-								<p>
-									<span class="title">Retest Upload Scenario</span>
-									<span class="short-description">Compellingly implement clicks-and-mortar relationships without highly efficient metrics.</span>
-									<span class="date">Oct 23, 2016</span>
-								</p>
-								<div class="controls">
-									<a href="#"><i class="icon-software icon-software-pencil"></i></a> <a href="#"><i class="icon-arrows icon-arrows-circle-remove"></i></a>
-								</div>
-							</li>
-							<li>
-								<label class="control-inline fancy-checkbox">
-									<input type="checkbox"><span></span>
-								</label>
-								<p>
-									<strong>Functional Spec Meeting</strong>
-									<span class="short-description">Monotonectally formulate client-focused core competencies after parallel web-readiness.</span>
-									<span class="date">Oct 11, 2016</span>
-								</p>
-								<div class="controls">
-									<a href="#"><i class="icon-software icon-software-pencil"></i></a> <a href="#"><i class="icon-arrows icon-arrows-circle-remove"></i></a>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<!-- END TODO LIST -->
+				
 			</div>
 			<div class="col-md-5">
-				<!-- TIMELINE -->
-				<div class="panel panel-scrolling">
-					<div class="panel-heading">
-						<h3 class="panel-title">Recent User Activity</h3>
-						<div class="right">
-							<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-							<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
-						</div>
-					</div>
-					<div class="panel-body">
-						<ul class="list-unstyled activity-list">
-							<li>
-								<img src="assets/img/user1.png" alt="Avatar" class="img-circle pull-left avatar">
-								<p><a href="#">Michael</a> has achieved 80% of his completed tasks <span class="timestamp">20 minutes ago</span></p>
-							</li>
-							<li>
-								<img src="assets/img/user2.png" alt="Avatar" class="img-circle pull-left avatar">
-								<p><a href="#">Daniel</a> has been added as a team member to project <a href="#">System Update</a> <span class="timestamp">Yesterday</span></p>
-							</li>
-							<li>
-								<img src="assets/img/user3.png" alt="Avatar" class="img-circle pull-left avatar">
-								<p><a href="#">Martha</a> created a new heatmap view <a href="#">Landing Page</a> <span class="timestamp">2 days ago</span></p>
-							</li>
-							<li>
-								<img src="assets/img/user4.png" alt="Avatar" class="img-circle pull-left avatar">
-								<p><a href="#">Jane</a> has completed all of the tasks <span class="timestamp">2 days ago</span></p>
-							</li>
-							<li>
-								<img src="assets/img/user5.png" alt="Avatar" class="img-circle pull-left avatar">
-								<p><a href="#">Jason</a> started a discussion about <a href="#">Weekly Meeting</a> <span class="timestamp">3 days ago</span></p>
-							</li>
-						</ul>
-						<button type="button" class="btn btn-primary btn-bottom center-block">Load More</button>
-					</div>
-				</div>
-				<!-- END TIMELINE -->
+
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-4">
-				<!-- TASKS -->
-				<div class="panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">My Tasks</h3>
-						<div class="right">
-							<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-							<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
-						</div>
-					</div>
-					<div class="panel-body">
-						<ul class="list-unstyled task-list">
-							<li>
-								<p>Updating Users Settings <span class="label-percent">23%</span></p>
-								<div class="progress progress-xs">
-									<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width:23%">
-										<span class="sr-only">23% Complete</span>
-									</div>
-								</div>
-							</li>
-							<li>
-								<p>Load &amp; Stress Test <span class="label-percent">80%</span></p>
-								<div class="progress progress-xs">
-									<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-										<span class="sr-only">80% Complete</span>
-									</div>
-								</div>
-							</li>
-							<li>
-								<p>Data Duplication Check <span class="label-percent">100%</span></p>
-								<div class="progress progress-xs">
-									<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-										<span class="sr-only">Success</span>
-									</div>
-								</div>
-							</li>
-							<li>
-								<p>Server Check <span class="label-percent">45%</span></p>
-								<div class="progress progress-xs">
-									<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-										<span class="sr-only">45% Complete</span>
-									</div>
-								</div>
-							</li>
-							<li>
-								<p>Mobile App Development <span class="label-percent">10%</span></p>
-								<div class="progress progress-xs">
-									<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
-										<span class="sr-only">10% Complete</span>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<!-- END TASKS -->
+				
 			</div>
 			<div class="col-md-4">
 				<!-- VISIT CHART -->
-				<div class="panel">
+				{{-- <div class="panel">
 					<div class="panel-heading">
 						<h3 class="panel-title">Website Visits</h3>
 						<div class="right">
@@ -354,34 +228,87 @@
 					<div class="panel-body">
 						<div id="visits-chart" class="ct-chart"></div>
 					</div>
-				</div>
+				</div> --}}
 				<!-- END VISIT CHART -->
 			</div>
-			<div class="col-md-4">
-				<!-- REALTIME CHART -->
-				<div class="panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">System Load</h3>
-						<div class="right">
-							<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-							<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+				<div class="col-md-4">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="main-content">
+	<div class="container-fluid">
+		<div class="panel panel-headline">
+			<div class="panel-heading">
+				<h1><strong>Analytics</strong></h1>
+				<h3 style="font-size: 20px; border-bottom: 1px solid #676A6B"></h3>
+				{{-- <p class="panel-subtitle">Period: Oct 14, 2016 - Oct 21, 2016</p> --}}
+			</div>
+			<div class="panel-body">
+				{{-- Event total revenue chart --}}
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel">
+							<div class="panel-heading">
+								<h3 class="panel-title" style="text-align: center;">Total Revenue (RM)</h3>
+								<div class="right">
+									{{-- <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+									<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button> --}}
+								</div>
+							</div>
+							<div class="panel-body">
+								<div class="col-md-9">
+									<div id="revenue-chart" class="ct-chart" style="position: relative"></div>
+								</div>
+								<div class="col-md-3">
+									<div class="weekly-summary text-right">
+										{{-- <span class="number">$65,938</span> <span class="percentage"><i class="fa fa-caret-down text-danger"></i> 8%</span>
+										<span class="info-label">Total Income</span> --}}
+										<span class="number">RM {{ number_format($totalRevenue, 2) }}</span>
+										<span class="info-label">Total Revenue Earned</span>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="panel-body">
-						<div id="system-load" class="easy-pie-chart" data-percent="70">
-							<span class="percent">70</span>
-						</div>
-						<h4>CPU Load</h4>
-						<ul class="list-unstyled list-justify">
-							<li>High: <span>95%</span></li>
-							<li>Average: <span>87%</span></li>
-							<li>Low: <span>20%</span></li>
-							<li>Threads: <span>996</span></li>
-							<li>Processes: <span>259</span></li>
-						</ul>
 					</div>
 				</div>
-				<!-- END REALTIME CHART -->
+				{{-- Event total ticket sales chart --}}
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel">
+							<div class="panel-heading">
+								<h3 class="panel-title" style="text-align: center;">Overall Ticket Sales</h3>
+								<div class="right">
+									{{-- <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+									<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button> --}}
+								</div>
+							</div>
+							<div class="panel-body">
+								<div id="ticket-sales-chart" class="ct-chart" style="position: relative"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{-- Page Visit chart --}}
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel">
+							<div class="panel-heading">
+								<h3 class="panel-title" style="text-align: center;">Page Visits Count</h3>
+								<div class="right">
+									{{-- <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+									<button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button> --}}
+								</div>
+							</div>
+							<div class="panel-body">
+								<div id="visits-trends-chart" class="ct-chart" style="position: relative"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 @endsection
@@ -393,72 +320,120 @@
 
 		// headline charts
 		data = {
-			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+			labels: @json($xLabel),
 			series: [
-				[23, 29, 24, 40, 25, 24, 35],
-				[14, 25, 18, 34, 29, 38, 44],
+				@foreach ($totalRevenues as $ticketName => $revenues)
+				[
+					@foreach ($revenues as $revenue)
+						{meta: "{{ $ticketName }}", value: @json($revenue)},
+					@endforeach
+				],
+				@endforeach
 			]
 		};
 
 		options = {
 			height: 300,
-			showArea: true,
-			showLine: false,
-			showPoint: false,
-			fullWidth: true,
+			stackBars: true,
+			showLine: true,
+			showPoint: true,
+			fullWidth: false,
 			axisX: {
 				showGrid: false
 			},
-			lineSmooth: false,
+			lineSmooth: true,
+			plugins: [
+				Chartist.plugins.tooltip({
+					currency: "RM "
+				}),
+				// Chartist.plugins.legend({
+				// 	position: 'bottom',
+				// 	legendNames: [
+				// 		@foreach ($totalRevenues as $ticketName => $revenues)
+				// 		[
+				// 			@json($ticketName),
+				// 		],
+				// 		@endforeach
+				// 	]
+				// })
+			]
 		};
 
-		new Chartist.Line('#headline-chart', data, options);
+		new Chartist.Bar('#revenue-chart', data, options);
+
+		// headline charts 2
+		data = {
+			labels: @json($xLabel),
+			series: [
+				@foreach ($totalTickets as $ticketName => $totalTicket)
+				[
+					@foreach ($totalTicket as $ticket)
+						{meta: "{{ $ticketName }}", value: @json($ticket)},
+					@endforeach
+				],
+				@endforeach
+			]
+		};
+
+		options = {
+			height: 300,
+			stackBars: true,
+			showLine: true,
+			showPoint: true,
+			fullWidth: false,
+			axisX: {
+				showGrid: false
+			},
+			lineSmooth: true,
+			plugins: [
+				Chartist.plugins.tooltip({
+					currency: "Number of tickets sold: "
+				})
+			]
+		};
+
+		new Chartist.Bar('#ticket-sales-chart', data, options);
 
 
 		// visits trend charts
 		data = {
-			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-			series: [{
-				name: 'series-real',
-				data: [200, 380, 350, 320, 410, 450, 570, 400, 555, 620, 750, 900],
-			}, {
-				name: 'series-projection',
-				data: [240, 350, 360, 380, 400, 450, 480, 523, 555, 600, 700, 800],
-			}]
+			labels: @json($xLabel),
+			series: [
+				@json($pageVisited)
+			]
 		};
 
 		options = {
-			fullWidth: true,
-			lineSmooth: false,
+			lineSmooth: true,
 			height: "270px",
 			low: 0,
 			high: 'auto',
-			series: {
-				'series-projection': {
-					showArea: true,
-					showPoint: false,
-					showLine: false
-				},
-			},
 			axisX: {
 				showGrid: false,
 
 			},
 			axisY: {
-				showGrid: false,
+				showGrid: true,
 				onlyInteger: true,
 				offset: 0,
 			},
 			chartPadding: {
 				left: 20,
 				right: 20
-			}
+			},
+			plugins: [
+				Chartist.plugins.tooltip({
+					transformTooltipTextFnc: function (view) {
+						return view + " views";
+					}
+				})
+			]
 		};
 
 		new Chartist.Line('#visits-trends-chart', data, options);
 
 
-		// visits chart
+		// visits bar chart
 		data = {
 			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 			series: [
@@ -488,20 +463,25 @@
 			lineCap: "square",
 			animate: 800
 		});
+		sysLoad.find(".percent").text();
 
-		var updateInterval = 3000; // in milliseconds
+		// var updateInterval = 3000; // in milliseconds
 
-		setInterval(function() {
-			var randomVal;
-			randomVal = getRandomInt(0, 100);
+		// setInterval(function() {
+		// 	var randomVal;
+		// 	randomVal = getRandomInt(0, 100);
 
-			sysLoad.data('easyPieChart').update(randomVal);
-			sysLoad.find('.percent').text(randomVal);
-		}, updateInterval);
+		@if($ticketSold != null && $ticketsAvailable != null)
+			sysLoad.data('easyPieChart').update({{ number_format($ticketSold / $ticketsAvailable * 100) }} * 100 / 100);
+		@else
+			sysLoad.data('easyPieChart').update(0);
+		@endif
+		// 	sysLoad.find('.percent').text(randomVal);
+		// }, updateInterval);
 
-		function getRandomInt(min, max) {
-			return Math.floor(Math.random() * (max - min + 1)) + min;
-		}
+		// function getRandomInt(min, max) {
+		// 	return Math.floor(Math.random() * (max - min + 1)) + min;
+		// }
 
 	});
 </script>

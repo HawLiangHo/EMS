@@ -40,6 +40,9 @@
                                     </span>
                                 @enderror
                             </div>
+                            <div class="col-md-1" style="margin-left: -60px; margin-top: 5px;">
+                                <i class="bi bi-eye-slash" id="toggleOldPassword"></i>
+                            </div>
                         </div>
                         {{-- New Password --}}
                         <div class="form-group row">
@@ -55,6 +58,9 @@
                                     </span>
                                 @enderror
                             </div>
+                            <div class="col-md-1" style="margin-left: -60px; margin-top: 5px;">
+                                <i class="bi bi-eye-slash" id="toggleNewPassword"></i>
+                            </div>
                         </div>
                         {{-- Confirm New Password --}}
                         <div class="form-group row">
@@ -63,6 +69,9 @@
                                 <input id="password-confirm" type="password" 
                                 class="form-control" name="password_confirmation" 
                                 required autocomplete="new-password" placeholder="Confirm new password">
+                            </div>
+                            <div class="col-md-1" style="margin-left: -60px; margin-top: 5px;">
+                                <i class="bi bi-eye-slash" id="togglePasswordConfirm"></i>
                             </div>
                         </div>
                         {{-- Submit button --}}
@@ -80,4 +89,40 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    const toggleOldPassword = document.querySelector('#toggleOldPassword');
+    const oldPassword = document.querySelector('#oldPassword');
+    const toggleNewPassword = document.querySelector('#toggleNewPassword');
+    const newPassword = document.querySelector('#password');
+    const togglePasswordConfirm = document.querySelector('#togglePasswordConfirm');
+    const passwordConfirm = document.querySelector('#password-confirm');
+
+
+    toggleOldPassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = oldPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    oldPassword.setAttribute('type', type);
+    // toggle the eye / eye slash icon
+    this.classList.toggle('bi-eye');
+    });
+
+    toggleNewPassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = newPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+    newPassword.setAttribute('type', type);
+    // toggle the eye / eye slash icon
+    this.classList.toggle('bi-eye');
+    });
+
+    togglePasswordConfirm.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = passwordConfirm.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordConfirm.setAttribute('type', type);
+    // toggle the eye / eye slash icon
+    this.classList.toggle('bi-eye');
+    });
+</script>
 @endsection

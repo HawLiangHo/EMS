@@ -17,7 +17,8 @@ class Checkout extends Model
         'ticket_id',
         'quantity',
         'total_price',
-        'paid_status'
+        'validity',
+        'status'
     ];
 
     public function user() {

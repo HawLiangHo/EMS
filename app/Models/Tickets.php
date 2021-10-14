@@ -26,4 +26,8 @@ class Tickets extends Model
     public function event(){
         return $this->belongsTo(Events::class, "event_id");
     }
+
+    public function checkouts() {
+        return $this->hasMany(Checkout::class, "ticket_id");
+    }
 }

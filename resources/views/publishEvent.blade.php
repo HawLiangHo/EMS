@@ -16,12 +16,15 @@
 		<div class="sidebar-scroll">
 			<nav>
 				<ul class="nav">
-                    <li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
+					<li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
 					<li><a href="{{ route('manageTickets', ['id' => $events->id]) }}" class=""><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
-					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>User Management</span></a></li>
-					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
                     <li><a href="{{ route('publishEvent', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
-                </ul>
+				</ul>
+				<h3 style="font-size: 20px; border-bottom: 3px solid #676A6B"></h3>
+				<ul class="nav">
+					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
+					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>Manage Assistant</span></a></li>
+				</ul>
 			</nav>
 		</div>
 	</div>
@@ -39,15 +42,25 @@
         <div class="panel-body">
             <form method="POST" action="{{ route('publishEvent',['id'=>$events->id]) }}" enctype="multipart/form-data">
                 @csrf
-            @if($events->publish_status != "Published")
+            @if($events->publish_status != "Published" && $events->num_of_participant != 0 && $events->registration_start_date != null && $events->registration_end_date != null && $ticketCount > 0) 
                 <button type="submit" class="btn btn-primary" value="Submit" style="float: right;">
                     Confirm Publish
                 </button>
-            @else
+            @elseif($ticketCount <= 0)
+                <p style="color:red; font-style:italic;">* Please complete ticketing details</p>
+                <button type="submit" class="btn btn-primary" value="Submit" style="float: right;" disabled>
+                    Confirm Publish
+                </button>
+            @elseif($events->publish_status == "Published")
                 <p style="color:red; font-style:italic;">* "{{ $events->title }}"  has been published</p>
                 <button type="submit" class="btn btn-primary" value="Submit" style="float: right;" disabled>
                     Confirm Publish
                 </button>
+            @else
+            <p style="color:red; font-style:italic;">* Please complete event details in order to proceed</p>
+            <button type="submit" class="btn btn-primary" value="Submit" style="float: right;" disabled>
+                Confirm Publish
+            </button>
             @endif
             </form>
         </div>
@@ -69,15 +82,16 @@
                             <div style="height: 0.35rem;"></div>
                             <div>
                                 <h4 class="m-0">
-                                    <a href="{{ route('viewEvents', ['id' => $events->id]) }}" style="color: rgb(48, 48, 48); font-weight: bold;">{{ $events->title }}</a>
+                                    <a href="" style="color: rgb(48, 48, 48); font-weight: bold;">{{ $events->title }}</a>
                                 </h4>
                                 <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ date('d/m/Y', strtotime($events->start_date)) }}, {{ date('H:i A', strtotime($events->start_time)) }}</label><br>
-                                <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $events->type }}</label><br>
-                                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">{{ $events->tags }}</label><br>
-                                <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $events->event_status }}</label><br>
-                                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots: {{ $events->remaining_num_of_participant }}</label><br>
-                                <label class="ms-0" style="margin-left: 0; color:rgb(15, 15, 15);">{{ $events->createdBy->username }}</label>
-                            </div>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ $events->type }}</label><br>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ $events->tags }}</label><br>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ $events->category }}</label><br>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">{{ $events->event_status }}</label><br>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots Left: {{ $events->remaining_num_of_participant }}</label><br>
+                                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">By {{ $events->username }}</label>
+                                </div>
                         </div>
                     </div>
                 </div>

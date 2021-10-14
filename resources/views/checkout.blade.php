@@ -38,22 +38,30 @@
                                                     @else
                                                     <p class="text-md text-dark font-weight-bold mb-0" id="price">RM {{ number_format($ticket->price, 2) }}</p>
                                                     @endif
+
+                                                    @if($ticket->quantity_left == 1)
+                                                    <p class="text-md text-dark font-weight-bold mb-0" id="price">Quantity left: &nbsp{{ $ticket->quantity_left }} ticket</p>
+                                                    @elseif($ticket->quantity_left > 1)
+                                                    <p class="text-md text-dark font-weight-bold mb-0" id="price">Quantity left: &nbsp{{ $ticket->quantity_left }} tickets</p>
+                                                    @else
+                                                    <p class="text-md text-dark font-weight-bold mb-0" id="price">Quantity left: &nbsp{{ $ticket->quantity_left }} ticket</p>
+                                                    @endif
                                                 </td>
                                                 <td>
+                                                    @if($ticket->quantity_left > 0)
                                                     <br><br>
-                                                    {{-- <select id="quantity" name="quantity" class="form-control" onChange="update('{{ $ticket->name }}', {{ $ticket->price }})">
-                                                        @for($i=0; $i<=$ticket->quantity_left; $i++)
-                                                            <option value=@if($i==0){{ $i }} disabled selected @else {{ $i }} @endif>
-                                                                @if($i==0) Select your ticket @else {{ $i }} @endif
-                                                            </option>
-                                                        @endfor
-                                                    </select> --}}
                                                     <input type="hidden" name="ticketID[]" value={{ $ticket->id }}>
                                                     <input type="hidden" name="price[]" value={{ $ticket->price }}>
                                                     <input type="number" style="margin-right: -50px; margin-left: -50px;"
                                                         class="input form-control" name="quantity[]" id="quantity{{ $ticket->id }}" 
                                                         onKeyPress="if(this.value.length==4) return false;" max="{{ $ticket->quantity_left }}" onkeyup="update()">
                                                     <br><br>
+                                                    @else
+                                                    <br><br>
+                                                    <input type="number" style="margin-right: -50px; margin-left: -50px;"
+                                                        class="input form-control" placeholder=" Not Available to Purchase" readonly>
+                                                    <br><br>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -122,27 +130,16 @@
         }
         document.getElementById('updatePrice').innerHTML = "Total: RM " + Number(totalPrice).toFixed(2);
     }
-    
-    var counter =0;
-    @foreach ($events->tickets as $ticket)
-    //Program to disable or enable a button using javascript
-    input = document.querySelector("#quantity{{ $ticket->id }}");
-    button = document.querySelector(".button");
-
-    button.disabled = true; //setting button state to disabled
-
-    input.addEventListener("change", stateHandle);
-
-    function stateHandle() {
-        if (document.querySelector("#quantity{{ $ticket->id }}").value === "" && counter != 0) {
-            button.disabled = true; //button remains disabled
-            counter--;
-        } else {
-            button.disabled = false; //button is enabled
-            counter++;
-        }
+   
+    function stateHandle(){
+        let any = $("input[name='quantity[]'").toArray().some(value => value.value != "");
+        button.disabled = !any;
+        console.log(any);
     }
+    var button = document.querySelector(".button");
+    var input = document.querySelector("input[name='quantity[]']");
+    $("input[name='quantity[]']").on("change", stateHandle);
+    stateHandle();
     
-    @endforeach
 </script>
 @endsection

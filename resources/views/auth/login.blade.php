@@ -43,14 +43,18 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-right required">{{ __('Password') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control @error('password') is-invalid @enderror" 
-                                    name="password" required autocomplete="current-password">
-
+                                    <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" 
+                                    name="password" required autocomplete="current-password" required>
+                                    
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+                                <div class="col-md-1" style="margin-left: -60px;">
+                                    <label class="col-md-4 col-form-label text-md-right"></label>
+                                    <i class="bi bi-eye-slash" id="togglePassword"></i>
                                 </div>
                             </div>
 
@@ -96,4 +100,21 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye / eye slash icon
+    this.classList.toggle('bi-eye');
+
+
+});
+</script>
 @endsection

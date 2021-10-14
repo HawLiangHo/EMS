@@ -6,6 +6,9 @@ use App\Models\Events;
 use App\Models\Tickets;
 use App\Models\User;
 use App\Models\Checkout;
+use App\Models\PageVisit;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,17 +21,47 @@ class EventController extends Controller
     public function index(){
         $events = Events::all();
 
+        $todayDate = Carbon::now();
+        // dd($todayDate);
+
+        foreach($events as $event){
+            $result = $todayDate->gt($event->start_date);
+            if($result){
+                $event->event_status = "Closed";
+                $event->save();
+            }
+        }
+
         return view('home',['events'=>$events]);
     }
 
     public function index2(){
         $events = Events::all();
+        $todayDate = Carbon::now();
+
+        foreach($events as $event){
+            $result = $todayDate->gt($event->start_date);
+            if($result){
+                $event->event_status = "Closed";
+                $event->save();
+            }
+        }
+
 
         return view('homeOngoing',['events'=>$events]);
     }
 
     public function index3(){
         $events = Events::all();
+        $todayDate = Carbon::now();
+
+        foreach($events as $event){
+            $result = $todayDate->gt($event->start_date);
+            if($result){
+                $event->event_status = "Closed";
+                $event->save();
+            }
+        }
 
         return view('homePast',['events'=>$events]);
     }
@@ -39,6 +72,8 @@ class EventController extends Controller
 
     public function eventDetails($id){
         $events = Events::findOrFail($id);
+
+        $events->pageVisits()->create();
 
         return view('viewEvents', ['events' => $events]);
     }
@@ -208,6 +243,7 @@ class EventController extends Controller
             $event->cover_image = file_get_contents(request('cover_image'));  
         }
         $event->num_of_participant = request('num_of_participant');
+        $event->remaining_num_of_participant = $event->num_of_participant;
         $event->registration_start_date = request('registration_start_date');
         $event->registration_end_date = request('registration_end_date'); 
         $event->save();
@@ -218,7 +254,15 @@ class EventController extends Controller
 
     public function publishEventPage($id){
         $events = Events::findOrFail($id);
-        return view('publishEvent', ['events' => $events]);
+        $tickets = Tickets::all()->where('event_id', $id);
+        $ticketCount = 0;
+        foreach($tickets as $ticket){
+            if($ticket != null){
+                $ticketCount += $ticket->quantity;
+            }
+        }
+
+        return view('publishEvent', ['events' => $events, 'tickets' => $tickets, 'ticketCount' => $ticketCount]);
     }
 
     public function publishEventAction($id){
@@ -232,9 +276,172 @@ class EventController extends Controller
     }
 
     public function openDashboard($id){
-        $events = Events::findOrFail($id);
+        $event = Events::findOrFail($id);
 
-        return view('dashboard', ['events' => $events]);
+        // convert created_at and end date to carbon
+        $startDate = $event->created_at;
+        $endDate = new Carbon($event->end_date . " " . $event->end_time);
+
+        // group checkouts into year|weekOfYear and ticket name
+        $xLabel = [];
+        $ticketsLabel = $event->tickets->pluck("name");
+        $copyStartDate = $startDate->copy();
+        while ($copyStartDate <= $endDate) {
+            $startDateOfWeek = $copyStartDate->copy()->startOfWeek();
+            $endDateOfWeek = $copyStartDate->copy()->endOfWeek();
+            $xLabelString = $startDateOfWeek->format("Y-m-d") . " - " . $endDateOfWeek->format("Y-m-d");
+            if(!in_array($xLabelString, $xLabel)) {
+                array_push($xLabel, $xLabelString);
+            }
+            $copyStartDate->addDays(7);
+        }
+        $startDateOfWeek = $endDate->copy()->startOfWeek();
+        $endDateOfWeek = $endDate->copy()->endOfWeek();
+        $xLabelString = $startDateOfWeek->format("Y-m-d") . " - " . $endDateOfWeek->format("Y-m-d");
+        if(!in_array($xLabelString, $xLabel)) {
+            array_push($xLabel, $xLabelString);
+        }
+        
+        // $checkoutGroups = $event->checkouts->filter(function ($checkout) use ($startDate, $endDate) {
+        //     return $checkout->created_at >= $startDate && $checkout->created_at <= $endDate;
+        // })->groupBy([
+        //     function ($checkout) {
+        //         return $checkout->created_at->year . "|" . $checkout->created_at->weekOfYear;
+        //     }, 
+        //     function ($checkout) {
+        //         return $checkout->ticket->name;
+        //     }
+        // ]);
+
+        $checkoutGroups = $event->checkouts->filter(function ($checkout) use ($startDate, $endDate) {
+            return $checkout->created_at >= $startDate && $checkout->created_at <= $endDate;
+        })->groupBy([
+            function ($checkout) {
+                return $checkout->ticket->name;
+            },
+            function ($checkout) {
+                return $checkout->created_at->year . "|" . $checkout->created_at->weekOfYear;
+            } 
+        ]);
+        foreach ($checkoutGroups as $ticketName => $values) {
+            foreach($values as $key2 => $value) {
+                $arr = explode("|", $key2);
+                $year = $arr[0];
+                $weekOfYear = $arr[1];
+                $date = (new Carbon())->setISODate($year, $weekOfYear);
+                $startDateOfWeek = $date->copy()->startOfWeek();
+                $endDateOfWeek = $date->copy()->endOfWeek();
+                $labelString = $startDateOfWeek->format("Y-m-d") . " - " . $endDateOfWeek->format("Y-m-d");
+                $checkoutGroups[$ticketName][$labelString] = $value;
+                unset($checkoutGroups[$ticketName][$key2]);
+            }
+        }
+
+        $totalRevenues = [];
+        foreach ($ticketsLabel as $ticket) {
+            if (!$checkoutGroups->has($ticket)) {
+                $totalRevenues[$ticket] = array_fill(0, count($xLabel), 0);
+            }
+            else {
+                $temp = [];
+                for ($i = 0; $i < count($xLabel); $i++) {
+                    $label = $xLabel[$i];
+                    $value = 0;
+                    if ($checkoutGroups[$ticket]->has($label)) {
+                        $value = $checkoutGroups[$ticket][$label]->sum(function ($checkout) {
+                            return $checkout->total_price;
+                        });
+                    }
+                    array_push($temp, $value);
+                }
+                $totalRevenues[$ticket] = $temp;
+            }
+        }
+
+        $totalRevenue = 0;
+        foreach ($totalRevenues as $priceArr) {
+            $totalRevenue += array_sum($priceArr);
+        }
+        
+        $totalTickets = [];
+        foreach ($ticketsLabel as $ticket) {
+            if (!$checkoutGroups->has($ticket)) {
+                $totalTickets[$ticket] = array_fill(0, count($xLabel), 0);
+            }
+            else {
+                $temp = [];
+                for ($i = 0; $i < count($xLabel); $i++) {
+                    $label = $xLabel[$i];
+                    $value = 0;
+                    if ($checkoutGroups[$ticket]->has($label)) {
+                        $value = $checkoutGroups[$ticket][$label]->sum(function ($checkout) {
+                            return $checkout->quantity;
+                        });
+                    }
+                    array_push($temp, $value);
+                }
+                $totalTickets[$ticket] = $temp;
+            }
+        }
+
+        $totalTicket = 0;
+        foreach ($totalTickets as $priceArr) {
+            $totalTicket += array_sum($priceArr);
+        }
+
+
+        // sum all the tickets sold
+        $ticketSold = $event->tickets->sum(function ($ticket) {
+            return $ticket->quantity - $ticket->quantity_left;
+        });
+        // sum all the tickets available
+        $ticketsAvailable = $event->tickets->sum(function ($ticket) {
+            return $ticket->quantity;
+        });
+        // calculate the participation rate  (ticket sold / total ticket available)
+
+        // group the page visited by year|weeksOfYear
+        $pageVisitedGroup = $event->pageVisits->filter(function ($pageVisit) use ($startDate, $endDate) {
+            return $pageVisit->created_at >= $startDate && $pageVisit->created_at <= $endDate;
+        })->groupBy(
+            function ($checkout) {
+                return $checkout->created_at->year . "|" . $checkout->created_at->weekOfYear;
+            }
+        );
+        foreach ($pageVisitedGroup as $key => $value) {
+            $arr = explode("|", $key);
+            $year = $arr[0];
+            $weekOfYear = $arr[1];
+            $date = (new Carbon())->setISODate($year, $weekOfYear);
+            $startDateOfWeek = $date->copy()->startOfWeek();
+            $endDateOfWeek = $date->copy()->endOfWeek();
+            $pageVisitedGroup[$startDateOfWeek->format("Y-m-d") . " - " . $endDateOfWeek->format("Y-m-d")] = $value;
+            unset($pageVisitedGroup[$key]);
+        }
+        $pageVisited = [];
+        for ($i = 0; $i < count($xLabel); $i++) {
+            $label = $xLabel[$i];
+            $value = 0;
+            if ($pageVisitedGroup->has($label)) {
+                $value = $pageVisitedGroup[$label]->count();
+            }
+            array_push($pageVisited, $value);
+        }
+        
+        $totalVisited = array_sum($pageVisited);
+        return view('dashboard', [
+            'event' => $event,
+            "xLabel" => $xLabel,
+            "ticketsLabel" => $ticketsLabel,
+            "totalRevenues" => $totalRevenues,
+            "totalRevenue" => $totalRevenue,
+            "totalTickets" => $totalTickets,
+            "totalTicket" => $totalTicket,
+            "ticketSold" => $ticketSold,
+            "ticketsAvailable" => $ticketsAvailable,
+            "pageVisited" => $pageVisited,
+            "totalVisited" => $totalVisited,
+        ]);
     }
 
     public function deleteEvent($id){
@@ -254,13 +461,6 @@ class EventController extends Controller
     public function checkoutRegister(Request $request, $id){
         $events = Events::findOrFail($id);
         
-        // $this->validate(
-        //     $request,
-        //     [
-        //         "quantity" => "array",
-        //         "quantity.*" => "required|integer",
-        //     ]
-        // );
         $tickets = [];
         for ($i=0; $i < count($request->quantity); $i++) {
             if($request->quantity[$i] != null){
@@ -272,16 +472,7 @@ class EventController extends Controller
             } 
         }
         $tickets = collect($tickets);
-        // foreach($request->checkouts as $checkout){
-        //     $tickets[] =[
-        //         "ticket_id" => $id,
-        //         "quantity" => $checkout->quantity
-        //     ]; 
-        // }
 
-        // Auth::user()->checkouts()->createMany($tickets);
-
-        // return view('checkoutConfirm',['events'=>$events]);
         return redirect()->route('checkoutConfirm', ['id'=>$id])->with("tickets", $tickets);
     }
 
@@ -307,11 +498,15 @@ class EventController extends Controller
                 for ($i=0; $i < count($request->quantity); $i++) {
                     if($request->quantity[$i] != null){
                         $ticket = Tickets::find($request->ticketID[$i]);
+                        $ticket->quantity_left = $ticket->quantity_left - $request->quantity[$i];
+                        $events->remaining_num_of_participant = $events->remaining_num_of_participant - $request->quantity[$i];
+
                         $checkouts[] = [
                             "ticket_id" => $ticket->id,
                             "quantity" => $request->quantity[$i],
                             "total_price" => $ticket->price * $request->quantity[$i],
-                            "paid_status" => "123",
+                            "validity" => 1,
+                            "status" => 1,
                         ];
                     }
                     $totalPrice += $ticket->price * $request->quantity[$i];
@@ -319,31 +514,20 @@ class EventController extends Controller
                 if ($user->credit_balance < $totalPrice) {
                     $this->validate(
                         $request,[
-                            'amount' => 'numeric|min:5|max:1500',
+                            'amount' => 'numeric|min:1|max:1500',
                             'ccn' => 'max:19', 
                     ]);
                 }
                 
                 $user->checkouts()->createMany($checkouts);
-        
-                // $checkouts = Checkout::where('user_id',$user->id);
-                // $tickets = array();
-                // foreach($checkouts as $checkout){
-                //     array_push($tickets, $checkout->total_price);
-                // }
-                // $totalPrice = 0.0;
-                // for ($i=0; $i < count($checkouts); $i++) {
-                //     $totalPrice = $totalPrice + $tickets[$i];
-                // } 
-
-                // $total_reload = $request->amount + $user->credit_balance;
+    
                 $user->credit_balance += ($request->amount ?? 0) - $totalPrice;
                 $user->save();
+                $ticket->save();
+                $events->save();
                 return redirect()->route('myTickets');
-        
 
             break;
         }
-
     }
 }

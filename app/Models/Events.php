@@ -49,4 +49,12 @@ class Events extends Model
     public function tickets() {
         return $this->hasMany(Tickets::class, "event_id");
     }
+
+    public function pageVisits() {
+        return $this->hasMany(PageVisit::class, "event_id");
+    }
+
+    public function checkouts() {
+        return $this->hasManyThrough(Checkout::class, Tickets::class, "event_id", "ticket_id");
+    }
 }

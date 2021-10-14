@@ -8,6 +8,7 @@ use App\Models\Events;
 use App\Models\Checkout;
 use App\Notifications\AdminCreatedNotification;
 use App\Rules\MatchOldPassword;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -53,6 +54,7 @@ class UserController extends Controller
 
     public function openChangePassword(){
         return view("changePassword");
+
     }
 
     public function changePassword(Request $request) {
@@ -60,8 +62,9 @@ class UserController extends Controller
             'oldPassword' => [new MatchOldPassword],
             'password' => 'required|confirmed|min:4|max:255',
         ]);
+
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->password)]);
-        return redirect()->route("changePassword")->with("status", "Your password has updated successfully");
+        return redirect()->route("changePassword")->with("status", "Your password has updated successfully");    
     }
 
     public function openBilling(){
@@ -81,15 +84,15 @@ class UserController extends Controller
     public function reloadCreditAction(Request $request){
         $this->validate(
             $request,[
-                'amount' => 'required|numeric|min:5|max:1500',
-                'ccn' => 'required|max:19',
+                'amount' => 'required|numeric|min:1|max:1500',
+                'credit_card_number' => 'required|max:19',
                 'month' => 'required',
                 'year' => 'required',
                 'cvv' => 'required'
         ]);
 
         $message = "";
-        if($request->amount < 5 || $request->amount > 1500){
+        if($request->amount < 1 || $request->amount > 1500){
             $message = "Invalid transaction!";
             return redirect()->route('reloadCredit')->with('message',$message);
         }
@@ -186,9 +189,20 @@ class UserController extends Controller
 
     public function myTickets(){
         $users = DB::table('users')->get();
-        $users = DB::select('SELECT * FROM users WHERE id = '.Auth::id().'');
+        $users = Auth::user();
+        $todayDate = Carbon::now();
+        
+        $checkouts = Checkout::all()->where('user_id', Auth::user()->id);
 
-        return view('myTickets',['users' => $users[0]]);
+        foreach($checkouts as $checkout){
+            $result = $todayDate->gt($checkout->ticket->event->start_date);
+            if($result){
+                $checkout->validity = 0;
+                $checkout->save();
+            }
+        }
+
+        return view('myTickets',['users' => $users]);
     }
 
     public function viewTicket($id){
@@ -199,7 +213,8 @@ class UserController extends Controller
 
     public function deleteRegisteredTicket($id){
         $checkout = Checkout::findOrFail($id);
-        $checkout->delete($id);
+        $checkout->status = 0;
+        $checkout->save();
 
         return view('myTickets');
         

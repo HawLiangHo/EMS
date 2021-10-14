@@ -16,7 +16,7 @@
                 <form action="{{ route('homeSearch2') }}" method="post">
                     @csrf
                     <input type="search" class="form-control" name="homeSearch" id="homeSearchInput"
-                        placeholder="Search for events...">
+                    placeholder="Search for events by title, date, time, type, tags, category, organizer....">
                 </form>
             </div>
             <div class="row" id="#" style="margin-top: 40px">

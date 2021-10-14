@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/vendor/linearicons/style.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link rel="stylesheet" href="/assets/vendor/chartist/css/chartist-custom.css">
+<link rel="stylesheet" href="/assets/vendor/chartist-plugin-tooltip-0.0.18/dist/chartist-plugin-tooltip.css">
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="/assets/css/main.css">
 <!-- CUSTOM MADE CSS -->
@@ -23,5 +24,6 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- DataTables jQuery and CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-<!-- Custom self CSS -->
-
+<!-- Other CSS -->
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />

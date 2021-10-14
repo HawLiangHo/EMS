@@ -53,20 +53,4 @@ class LoginController extends Controller
         
     }
 
-    // public function assistantLogin(){
-    //     return view('assistantLogin');
-    // }
-
-    // public function assistantLoginAction(Request $request){
-    //     $this->validate($request, [
-    //         "username" => "required|max:255",
-    //         "password" => "required"
-    //     ]);
-
-    //     if (!auth()->attempt($request->only('username', 'password'), $request->remember)) {
-    //         return redirect()->route("assistantLogin")->withInput()->with("status", "Invalid login details");
-    //     }
-
-    //     return redirect()->route("assistantEvent");
-    // }
 }

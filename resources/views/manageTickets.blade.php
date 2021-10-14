@@ -16,12 +16,15 @@
 		<div class="sidebar-scroll">
 			<nav>
 				<ul class="nav">
-                    <li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
+					<li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
 					<li><a href="{{ route('manageTickets', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
-					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>User Management</span></a></li>
-					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
                     <li><a href="{{ route('publishEvent', ['id' => $events->id]) }}" class=""><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
-                </ul>
+				</ul>
+				<h3 style="font-size: 20px; border-bottom: 3px solid #676A6B"></h3>
+				<ul class="nav">
+					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
+					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>Manage Assistant</span></a></li>
+				</ul>
 			</nav>
 		</div>
 	</div>
@@ -36,13 +39,19 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="panel panel-headline">
-                    <div class="panel-heading"><h3>List of Tickets</h3></div>
+                    <div class="panel-heading">
+                        <h3>List of Tickets</h3>
+                        @if($events->num_of_participant <= 0)
+                            <p style="color:red; font-style: italic;">* Please complete event details in order to proceed</p>
+                        @endif
+                    </div>
                     <div class="table-responsive p-0">
                         <div class="col-md-12 offset-md-4">
-                        @if($events->publish_status != "Published")
+                        @if($events->publish_status != "Published" && $ticketCount < $events->num_of_participant )
                             <a href="{{ route('addTickets',['id'=>$events->id]) }}" style="float:right;" class="btn btn-default">Add ticket</a>
                         @endif
                         </div>
+                        {{-- dd({{ $ticketCount }}) --}}
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>

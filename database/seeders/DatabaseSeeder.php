@@ -89,8 +89,8 @@ class DatabaseSeeder extends Seeder
             'end_time' => '10:30:00',
             'registration_start_date' => '2021-10-01',
             'registration_end_date' => '2021-10-09',
-            'num_of_participant' => 30,
-            'remaining_num_of_participant' => 30,
+            'num_of_participant' => 10,
+            'remaining_num_of_participant' => 10,
             'publish_status' => "Published",
             'event_status' => "Closed",
             'created_at' => '2021-09-14 09:14:05',
@@ -100,35 +100,36 @@ class DatabaseSeeder extends Seeder
 
         DB::table('tickets')->insert(array(
             'event_id' => 1,
-            'name' => "Ticket 1",
+            'name' => "General Attendee",
             'type' => "General Admission",
-            'quantity' => 10,
-            'quantity_left' => 10,
+            'quantity' => 20,
+            'quantity_left' => 20,
             'price' => 1,
-            'link' => "https://meet.google.com'",
+            'link' => "https://meet.google.com",
         ));
 
         DB::table('tickets')->insert(array(
             'event_id' => 1,
-            'name' => "Ticket 2",
+            'name' => "Late Birds Attendee",
             'type' => "General Admission",
             'quantity' => 10,
             'quantity_left' => 10,
             'price' => 5,
-            'link' => "https://meet.google.com'",
+            'link' => "https://meet.google.com",
         ));
 
         DB::table('tickets')->insert(array(
             'event_id' => 2,
-            'name' => "Ticket 1",
+            'name' => "General Attendee",
             'type' => "General Admission",
             'quantity' => 10,
             'quantity_left' => 10,
             'price' => 5,
-            'link' => "https://meet.google.com'",
+            'link' => "https://meet.google.com",
         ));
+
         $event = Events::find(1);
         $event->users()->attach([1,2]);
-        $event->assistants()->attach([3,1]);
+        $event->assistants()->attach([3]);
     }
 }

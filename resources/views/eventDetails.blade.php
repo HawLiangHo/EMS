@@ -16,12 +16,15 @@
 		<div class="sidebar-scroll">
 			<nav>
 				<ul class="nav">
-                    <li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-home"></i> <span>Details</span></a></li>
+					<li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-home"></i> <span>Details</span></a></li>
 					<li><a href="{{ route('manageTickets', ['id' => $events->id]) }}" class=""><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
-					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>User Management</span></a></li>
-					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
                     <li><a href="{{ route('publishEvent', ['id' => $events->id]) }}" class=""><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
-                </ul>
+				</ul>
+				<h3 style="font-size: 20px; border-bottom: 3px solid #676A6B"></h3>
+				<ul class="nav">
+					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
+					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class=""><i class="lnr lnr-users"></i> <span>Manage Assistant</span></a></li>
+				</ul>
 			</nav>
 		</div>
 	</div>
@@ -36,15 +39,13 @@
         		<!-- OVERVIEW -->
 		<div class="panel panel-headline">
             <div class="panel-heading">
-				<h3 class="panel-title"></h3>
-				<p class="panel-subtitle"></p>
 			</div>
             <p class="text-success">{{ session('message') }}</p>
 			<div class="panel-body">
 				<div class="row">
 					<form method="POST" action="{{ route('eventDetails',['id'=>$events->id]) }}" enctype="multipart/form-data">
                         @csrf
-                    <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Basic Info</h3><br>
+                    <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B;"><strong>Basic Info</strong></h3><br>
                     {{-- Title --}}
                     <div class="form-group row">
                         <label for="title" class="col-md-3 col-form-label text-md-right required">{{ __('Title') }}</label>
@@ -54,7 +55,7 @@
                             placeholder="(empty)" @if($events->publish_status=="Published") readonly @endif>
                             @error('title')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
@@ -73,7 +74,7 @@
                             </div>
                             @error('description')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
@@ -96,7 +97,7 @@
                             </select>
                             @error('category')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         @else
@@ -114,12 +115,13 @@
                             value="{{ old('tags',$events->tags) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('tags')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
                     </div>
-                    <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Event Venue</h3><br>
+                    <br>
+                    <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>Event Venue</strong></h3><br>
                     {{-- Event Type --}}
                     <div class="form-group row">
                         <label for="type" class="col-md-3 col-form-label text-md-right required">{{ __('Type of Event') }}</label>
@@ -132,7 +134,7 @@
                                 </select>
                                 @error('type')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                        <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                     </span>
                                 @enderror
                             @else
@@ -150,7 +152,7 @@
                             value="{{ old('venue_name',$events->venue_name) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('venue_name')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
@@ -165,22 +167,23 @@
                             value="{{ old('venue_address',$events->venue_address) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('venue_address')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
                     </div>
-                    <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Event Time</h3><br>
+                    <br>
+                    <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>Event Time</strong></h3><br>
                     {{-- Start date and end date --}}
                     <div class="form-group row">
                         <label for="start_date" class="col-md-3 col-form-label text-md-right required">{{ __('Start Date') }}</label>
                         <div class="col-md-3">
                             <input type="date" id="startDate" class="form-control @error('start_date') is-invalid @enderror" 
                             name="start_date" 
-                            value="{{ old('start_date',$events->start_date) }}" @if($events->publish_status=="Published") readonly @endif>
+                            value="{{ old('start_date',$events->start_date) }}" onblur="updateRegisterStartDate();" @if($events->publish_status=="Published") readonly @endif>
                             @error('start_date')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
@@ -191,7 +194,7 @@
                             value="{{ old('end_date',$events->end_date) }}" @if($events->publish_status=="Published") readonly @endif>
                             @error('end_date')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
@@ -207,7 +210,7 @@
                             >
                             @error('start_time')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
@@ -219,12 +222,13 @@
                             min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d">
                             @error('end_time')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
                     </div>
-                    <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Event Cover Image</h3><br>
+                    <br>
+                    <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>Event Cover Image</strong></h3><br>
                     {{-- Cover Image --}}
                     <div class="form-group row">
                         <label for="cover_image" class="col-md-3 col-form-label text-md-right required">{{ __('Cover Image') }}</label>
@@ -237,7 +241,7 @@
                                 src="data:image/png;base64,{{ chunk_split(base64_encode($events->cover_image)) }}">
                             @error('cover_image')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
 
@@ -248,7 +252,8 @@
                             @endif
                         </div>
                     </div>
-                    <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">More Details</h3><br>
+                    <br>
+                    <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>More Details</strong></h3><br>
                     {{-- Number of Participants --}}
                     <div class="form-group row">
                         <label for="num_of_participant" class="col-md-3 col-form-label text-md-right required">{{ __('Number of Participants Allowed') }}</label>
@@ -261,7 +266,7 @@
                             <p> 
                                 @error('num_of_participant')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                                 @enderror  
                             </p>         
@@ -271,23 +276,40 @@
                     <div class="form-group row">
                         <label for="registration_start_date" class="col-md-3 col-form-label text-md-right required">{{ __('Registration Start Date') }}</label>
                         <div class="col-md-3">
-                            <input type="date" id="startDate" class="form-control @error('registration_start_date') is-invalid @enderror" 
-                            name="registration_start_date" @if($events->publish_status=="Published") readonly @endif
-                            value="{{ old('registration_start_date',$events->registration_start_date) }}">
+                            <input type="date" id="registration_start_date" class="form-control @error('registration_start_date') is-invalid @enderror" 
+                            name="registration_start_date" 
+                            @if($events->publish_status=="Published") 
+                            value="{{ old('registration_start_date',$events->registration_start_date) }}"
+                            readonly 
+                            @elseif($events->registration_start_date != null)
+                            value="{{ old('registration_start_date',$events->registration_start_date) }}"
+                            @else
+                            value="{{ old('registration_start_date') }}"
+                            @endif
+                            onblur="updateRegisterEndDate();"
+                            >
                             @error('registration_start_date')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
                         <label for="registration_end_date" class="col-md-2 col-form-label text-md-right required">{{ __('Registration End Date') }}</label>
                         <div class="col-md-3">
-                            <input type="date" id="endDate" class="form-control @error('registration_end_date') is-invalid @enderror" 
-                            name="registration_end_date" @if($events->publish_status=="Published") readonly @endif
-                            value="{{ old('registration_end_date',$events->registration_end_date) }}">
+                            <input type="date" id="registration_end_date" class="form-control @error('registration_end_date') is-invalid @enderror" 
+                            name="registration_end_date" 
+                            @if($events->publish_status=="Published")
+                            value="{{ old('registration_end_date',$events->registration_end_date) }}"
+                            readonly
+                            @elseif($events->registration_end_date != null)
+                            value="{{ old('registration_end_date',$events->registration_end_date) }}"
+                            @else
+                            value="{{ old('registration_end_date') }}" 
+                            @endif
+                            >
                             @error('registration_end_date')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                    <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                 </span>
                             @enderror
                         </div>
@@ -313,6 +335,31 @@
 
 @section('script')
     <script>
+        $(document).ready(function(){
+            updateRegisterStartDate();
+            updateRegisterEndDate();
+            
+        });
+
+        function updateRegisterStartDate(){
+            var startRegisterDate = new Date().toJSON().slice(0,10);
+            var endStartRegisterDate = document.getElementById('startDate').value;
+
+            document.getElementById('endDate').setAttribute('min', endStartRegisterDate);
+            document.getElementById('registration_start_date').setAttribute('min', startRegisterDate);
+            document.getElementById('registration_start_date').setAttribute('max', endStartRegisterDate);
+
+        }
+        function updateRegisterEndDate(){
+            var startEndRegistrationDate = document.getElementById('registration_start_date').value;
+            var lastEndRegistrationDate = document.getElementById('startDate').value;
+
+            document.getElementById('registration_end_date').setAttribute('min', startEndRegistrationDate);
+            document.getElementById('registration_end_date').setAttribute('max', lastEndRegistrationDate);
+
+
+        }
+
         function countWords(words){
             $('#description_word_count').text(words.value.length + "/" + words.maxLength);
         };

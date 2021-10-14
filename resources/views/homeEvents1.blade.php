@@ -11,11 +11,12 @@
                     <a href="{{ route('viewEvents', ['id' => $event->id]) }}" style="color: rgb(48, 48, 48); font-weight: bold;">{{ $event->title }}</a>
                 </h4>
                 <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ date('d/m/Y', strtotime($event->start_date)) }}, {{ date('H:i A', strtotime($event->start_time)) }}</label><br>
-                <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $event->type }}</label><br>
-                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">{{ $event->tags }}</label><br>
-                <label class="ms-0" style="margin-left: 0; color:rgb(255, 169, 71);">{{ $event->event_status }}</label><br>
-                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots: {{ $event->remaining_num_of_participant }}</label><br>
-                <label class="ms-0" style="margin-left: 0; color:rgb(15, 15, 15);">{{ $event->createdBy->username }}</label>
+                <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ $event->type }}</label><br>
+                <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ $event->tags }}</label><br>
+                <label class="ms-0" style="margin-left: 0; color:rgb(255, 171, 15);">{{ $event->category }}</label><br>
+                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">{{ $event->event_status }}</label><br>
+                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">Available Slots Left: {{ $event->remaining_num_of_participant }}</label><br>
+                <label class="ms-0" style="margin-left: 0; color:rgb(132, 132, 132);">By {{ $event->createdBy->username }}</label>
             </div>
         </div>
     </div>

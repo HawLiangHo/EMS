@@ -14,9 +14,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="panel panel-headline">
-                    <div class="panel-heading"><h3>Create An Event</h3></div>
+                    <div class="panel-heading"><h3><strong>Create An Event</strong></h3></div>
                         <div class="panel-body">
-                            <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Basic Info</h3><br>
+                            <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>Basic Info</strong></h3><br>
                             @if (session('status'))
                                 <div class="text-danger row mb-3 col-sm-6 offset-sm-3">{{ session('status') }}</div><br>
                             @endif
@@ -33,7 +33,7 @@
                                     name="title" value="{{ old('title') }}" placeholder="Event full name">
                                     @error('title')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -52,7 +52,7 @@
                                     </div>
                                     @error('description')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -74,7 +74,7 @@
                                     </select>
                                     @error('category')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -88,12 +88,13 @@
                                     value="{{ old('tags') }}">
                                     @error('tags')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
-                            <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Event Venue</h3><br>
+                            <br>
+                            <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>Event Venue</strong></h3><br>
                             {{-- Event Type --}}
                             <div class="form-group row">
                                 <label for="type" class="col-md-3 col-form-label text-md-right required">{{ __('Type of Event') }}</label>
@@ -105,7 +106,7 @@
                                     </select>
                                     @error('type')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -119,7 +120,7 @@
                                     value="{{ old('venue_name') }}">
                                     @error('venue_name')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -134,22 +135,23 @@
                                     value="{{ old('venue_address') }}">
                                     @error('venue_address')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
-                            <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Event Time</h3><br>
+                            <br>
+                            <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>Event Time</strong></h3><br>
                             {{-- Start date and end date --}}
                             <div class="form-group row">
                                 <label for="start_date" class="col-md-3 col-form-label text-md-right required">{{ __('Start Date') }}</label>
                                 <div class="col-md-3">
                                     <input type="date" id="startDate" class="form-control @error('start_date') is-invalid @enderror" 
-                                    name="start_date" 
+                                    name="start_date" onblur="updateRegisterStartDate();"
                                     value="{{ old('start_date') }}">
                                     @error('start_date')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -160,23 +162,27 @@
                                     value="{{ old('end_date') }}">
                                     @error('end_date')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
                             {{-- Start time and end time --}}
                             <div class="form-group row">
+                                <br>
+                                <p class="col-md-9 col-form-label text-md-right" style="color:red; font-style: italic;">* Event time only available from 7:00am  - 9:00pm</p>
+                            </div>
+                            <div class="form-group row">
                                 <label for="start_time" class="col-md-3 col-form-label text-md-right required">{{ __('Start Time') }}</label>
                                 <div class="col-md-3">
                                     <input type="time" id="startTime" class="form-control @error('start_time') is-invalid @enderror" 
                                     name="start_time" placeholder='hh:mm' onfocus="this.placeholder = ''"
                                     value="{{ old('start_time') }}"
-                                    min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d"
+                                    min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d" onblur="updateEndTime();"
                                     >
                                     @error('start_time')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -188,12 +194,13 @@
                                     min="07:00" max="21:00" pattern="(09|1[0-5]):[0-5]\d">
                                     @error('end_time')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
-                            <h3 style="font-size: 20px; border-bottom: 1px solid #676A6B">Event Cover Image</h3><br>
+                            <br>
+                            <h3 style="font-size: 30px; border-bottom: 1px solid #676A6B"><strong>Event Cover Image</strong></h3><br>
                             {{-- Cover Image --}}
                             <div class="form-group row">
                                 <label for="cover_image" class="col-md-3 col-form-label text-md-right required">{{ __('Cover Image') }}</label>
@@ -203,7 +210,7 @@
                                     accept=".pdf,.jpg,.png,.jpeg" style="align-content: center;  font-size: 13px;">
                                     @error('cover_image')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
+                                            <p style="color: rgb(255, 83, 83);">{{ $message }}</p>
                                         </span>
                                     @enderror
                                 </div>
@@ -227,6 +234,23 @@
 
 @section('script')
     <script>
+        $(document).ready(function(){
+            updateRegisterStartDate();
+            updateEndTime();
+        });
+        
+        function updateRegisterStartDate(){
+            var startDate = document.getElementById('startDate').value;
+            document.getElementById('endDate').setAttribute('min', startDate);
+
+        }
+
+        function updateEndTime(){
+            var startTime = document.getElementById('startTime').value;
+            document.getElementById('endTime').setAttribute('min', startTime);
+
+        }
+
         function countWords(words){
             $('#description_word_count').text(words.value.length + "/" + words.maxLength);
         };

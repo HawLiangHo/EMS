@@ -26,13 +26,13 @@
                             <label for="amount" class="col-md-4 col-form-label text-md-right required">{{ __('Reload Amount (RM)') }}</label>
                             <div class="col-md-3"> 
                                 <input id="amount" type="text" name="amount"
-                                maxlength="4" min="5" max="1500" class="form-control"
+                                maxlength="4" min="1" max="1500" class="form-control"
                                 placeholder="Enter amount" 
                                 oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">   
                                 <p> 
                                     @error('amount')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        {{ $message }}
                                     </span>
                                     @enderror  
                                 </p>         
@@ -40,15 +40,15 @@
                         </div>
                         {{-- Credit Card Number --}}
                         <div class="form-group row">
-                            <label for="ccn" class="col-md-4 col-form-label text-md-right required">{{ __('Credit/Debit Card Number') }}</label>
+                            <label for="credit_card_number" class="col-md-4 col-form-label text-md-right required">{{ __('Credit/Debit Card Number') }}</label>
                             <div class="col-md-3">
-                                <input id="ccn" type="text" class="creditCardText form-control" name="ccn"
+                                <input id="credit_card_number" type="text" class="creditCardText form-control" name="credit_card_number"
                                  maxlength="19" size="19"
                                 placeholder="xxxx-xxxx-xxxx-xxxx" oninput="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">                            
                                 <p> 
-                                    @error('ccn')
+                                    @error('credit_card_number')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        {{ $message }}
                                     </span>
                                     @enderror  
                                 </p>  
@@ -65,14 +65,14 @@
                                 <p> 
                                     @error('month')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        {{ $message }}
                                     </span>
                                     @enderror  
                                 </p>  
                                 <p> 
                                     @error('year')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        {{ $message }}
                                     </span>
                                     @enderror  
                                 </p>  
@@ -88,7 +88,7 @@
                                 <p> 
                                     @error('cvv')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        {{ $message }}
                                     </span>
                                     @enderror  
                                 </p> 
