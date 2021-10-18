@@ -94,7 +94,9 @@
                                                     <i class="lnr lnr-eye btn-stock-action" style="color: orange; font-size: 25px;"></i>
                                                 </a>
                                                 @endif
+                                                @if(Auth::user()->isAdmin())
                                                 <a class="lnr lnr-trash btn-stock-action deleteEvent" style="color: orange; font-size: 25px;" id="{{ $event->id }}" value="{{ $event->title }}"></a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

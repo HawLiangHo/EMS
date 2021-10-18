@@ -11,17 +11,20 @@
 @section("sidebar")
 <!-- LEFT SIDEBAR -->
 	@auth
-	@if (Auth::user()->isAdmin())
+	@if (Auth::user()->isAdmin() | Auth::user()->isAssistant())
 	<div id="sidebar-nav" class="sidebar">
 		<div class="sidebar-scroll">
 			<nav>
 				<ul class="nav">
-                    <li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
+					<li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
 					<li><a href="{{ route('manageTickets', ['id' => $events->id]) }}" class=""><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
-					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-users"></i> <span>User Management</span></a></li>
-					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
                     <li><a href="{{ route('publishEvent', ['id' => $events->id]) }}" class=""><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
-                </ul>
+				</ul>
+				<h3 style="font-size: 20px; border-bottom: 3px solid #676A6B"></h3>
+				<ul class="nav">
+					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
+					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-users"></i> <span>Manage Assistant</span></a></li>
+				</ul>
 			</nav>
 		</div>
 	</div>

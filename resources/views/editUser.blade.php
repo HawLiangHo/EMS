@@ -16,12 +16,15 @@
 		<div class="sidebar-scroll">
 			<nav>
 				<ul class="nav">
-                    <li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
+					<li><a href="{{ route('eventDetails', ['id' => $events->id]) }}" class=""><i class="lnr lnr-home"></i> <span>Details</span></a></li>
 					<li><a href="{{ route('manageTickets', ['id' => $events->id]) }}" class=""><i class="lnr lnr-tag"></i> <span>Ticketing</span></a></li>
-					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-users"></i> <span>User Management</span></a></li>
-					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
                     <li><a href="{{ route('publishEvent', ['id' => $events->id]) }}" class=""><i class="lnr lnr-file-add"></i> <span>Publish</span></a></li>
-                </ul>
+				</ul>
+				<h3 style="font-size: 20px; border-bottom: 3px solid #676A6B"></h3>
+				<ul class="nav">
+					<li><a href="{{ route('dashboard', ['id' => $events->id]) }}" class=""><i class="lnr lnr-chart-bars"></i> <span>Dashboard</span></a></li>
+					<li><a href="{{ route('manageUsers', ['id' => $events->id]) }}" class="active"><i class="lnr lnr-users"></i> <span>Manage Assistant</span></a></li>
+				</ul>
 			</nav>
 		</div>
 	</div>
@@ -43,13 +46,13 @@
                             {{-- Username --}}
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Assistant Name') }}</label>
-
+                                
                                 <div class="col-md-6">
                                     <input id="username" type="text" 
                                     class="form-control @error('name') is-invalid @enderror" name="username" 
                                     value="{{ old('username',$assistants->username) }}" required autocomplete="username" autofocus 
                                     placeholder="e.g. Adam Smith"
-                                    @if ($events->publish_status == "Published") readonly @endif>
+                                    @if ($events->publish_status == "Published" | Auth::user()->id != $assistants->id) readonly @endif>
 
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -66,7 +69,7 @@
                                     <input id="email" type="email" 
                                     class="form-control @error('email') is-invalid @enderror" name="email" 
                                     value="{{ old('email',$assistants->email) }}" required autocomplete="email" placeholder="e.g. adamsmith@gmail.com"
-                                    @if ($events->publish_status == "Published") readonly @endif>
+                                    @if ($events->publish_status == "Published"  | Auth::user()->id != $assistants->id) readonly @endif>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -83,7 +86,7 @@
                                     <input id="phone" type="text" 
                                     class="form-control @error('phone') is-invalid @enderror" name="phone" 
                                     value="{{ old('phone',$assistants->phone) }}" placeholder="e.g. 012-3456789"
-                                    @if ($events->publish_status == "Published") readonly @endif>
+                                    @if ($events->publish_status == "Published"  | Auth::user()->id != $assistants->id) readonly @endif>
 
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
@@ -101,7 +104,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-12 offset-md-4">
                                     @if ($events->publish_status != "Published")
-                                        <button type="submit" class="btn btn-primary" value="Register">
+                                        <button type="submit" class="btn btn-primary" value="Register" @if(Auth::user()->id != $assistants->id) disabled @endif>
                                             {{ __('Update details') }}
                                         </button>
                                     @endif
