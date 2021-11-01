@@ -374,11 +374,11 @@
         }
 
         $(function(){
-            var dtToday = new Date();
+            var todayDate = new Date();
             
-            var month = dtToday.getMonth() + 1;
-            var day = dtToday.getDate();
-            var year = dtToday.getFullYear();
+            var month = todayDate.getMonth() + 1;
+            var day = todayDate.getDate();
+            var year = todayDate.getFullYear();
             if(month < 10)
                 month = '0' + month.toString();
             if(day < 10)
@@ -390,11 +390,11 @@
         });
 
         $(function(){
-            var dtToday = new Date();
+            var todayDate = new Date();
             
-            var month = dtToday.getMonth() + 1;
-            var day = dtToday.getDate();
-            var year = dtToday.getFullYear();
+            var month = todayDate.getMonth() + 1;
+            var day = todayDate.getDate();
+            var year = todayDate.getFullYear();
             if(month < 10)
                 month = '0' + month.toString();
             if(day < 10)
@@ -404,10 +404,5 @@
 
             $('#endDate').attr('min', maxDate);
         });
-
-        function test(){
-            var x = document.getElementById("startTime").value;
-            var y = document.getElementById("endTime").min = x;
-        }
     </script>
 @endsection
