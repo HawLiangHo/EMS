@@ -158,8 +158,6 @@
 
         function validateQuantityAllowed(){
             var maximum = {{ $events->num_of_participant }} - {{ $ticketCount }};
-            console.log(maximum);
-
             document.getElementById('quantity').setAttribute('max', maximum);
         }
 </script>

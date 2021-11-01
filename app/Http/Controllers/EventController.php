@@ -301,17 +301,6 @@ class EventController extends Controller
         if(!in_array($xLabelString, $xLabel)) {
             array_push($xLabel, $xLabelString);
         }
-        
-        // $checkoutGroups = $event->checkouts->filter(function ($checkout) use ($startDate, $endDate) {
-        //     return $checkout->created_at >= $startDate && $checkout->created_at <= $endDate;
-        // })->groupBy([
-        //     function ($checkout) {
-        //         return $checkout->created_at->year . "|" . $checkout->created_at->weekOfYear;
-        //     }, 
-        //     function ($checkout) {
-        //         return $checkout->ticket->name;
-        //     }
-        // ]);
 
         $checkoutGroups = $event->checkouts->filter(function ($checkout) use ($startDate, $endDate) {
             return $checkout->created_at >= $startDate && $checkout->created_at <= $endDate;
@@ -393,7 +382,6 @@ class EventController extends Controller
         $ticketsAvailable = $event->tickets->sum(function ($ticket) {
             return $ticket->quantity;
         });
-        // calculate the participation rate  (ticket sold / total ticket available)
 
         // group the page visited by year|weeksOfYear
         $pageVisitedGroup = $event->pageVisits->filter(function ($pageVisit) use ($startDate, $endDate) {

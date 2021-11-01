@@ -42,7 +42,7 @@ class EmailReminder extends Command
     {
         $events = Events::where('event_status', 'Open')->get();
         foreach ($events as $event) {
-            if(date("Y-m-d") == date("Y-m-d", strtotime("-3 days", strtotime($event->end_date)))) {
+            if(date("Y-m-d") == date("Y-m-d", strtotime("-3 days", strtotime($event->start_date)))) {
                 foreach ($event->users as $user) {
                     Mail::to($user->email)->send(new SendMailReminder($event, $user));
                 }
