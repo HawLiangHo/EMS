@@ -35,7 +35,6 @@
 
 @section('content')
 <div class="main-content">
-	<div class="container-fluid">
 		<!-- OVERVIEW -->
 		<div class="panel panel-headline">
 			<div class="panel-heading">
@@ -113,20 +112,18 @@
 			</div>
 		</div>
 		<!-- END OVERVIEW -->
-	</div>
+	
 </div>
 <div class="main-content">
-	<div class="container-fluid">
 		<div class="panel panel-headline">
 			<div class="panel-heading">
 				<h1><strong>Analytics</strong></h1>
 				<h3 style="font-size: 20px; border-bottom: 1px solid #676A6B"></h3>
-				{{-- <p class="panel-subtitle">Period: Oct 14, 2016 - Oct 21, 2016</p> --}}
 			</div>
 			<div class="panel-body">
 				{{-- Event total revenue chart --}}
-				<div class="row">
-					<div class="col-md-12">
+				<div class="row col-md-14">
+					<div class="col-md-14">
 						<div class="panel">
 							<div class="panel-heading">
 								<h3 class="panel-title" style="text-align: center;">Weekly Revenue Earned By Ticket Type (RM)</h3>
@@ -134,10 +131,10 @@
 								</div>
 							</div>
 							<div class="panel-body">
-								<div class="col-md-9">
-									<div id="revenue-chart" class="ct-chart" style="position: relative"></div>
+								<div class="col-md-10">
+									<div id="revenue-chart" class="ct-chart" style="position: relative;"></div>
 								</div>
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<div class="weekly-summary text-right">
 										<span class="number">RM {{ number_format($totalRevenue, 2) }}</span>
 										<span class="info-label">Total Revenue Earned</span>
@@ -149,7 +146,7 @@
 				</div>
 				{{-- Event total ticket sales chart --}}
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-14">
 						<div class="panel">
 							<div class="panel-heading">
 								<h3 class="panel-title" style="text-align: center;">Overall Ticket Type Sales</h3>
@@ -164,7 +161,7 @@
 				</div>
 				{{-- Page Visit chart --}}
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-14">
 						<div class="panel">
 							<div class="panel-heading">
 								<h3 class="panel-title" style="text-align: center;">Event Page Visits Count</h3>
@@ -179,7 +176,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	
 </div>
 @endsection
 
@@ -187,7 +184,7 @@
 <script>
 	$(function() {
 		var data, options;
-
+		
 		// headline charts
 		data = {
 			labels: [
@@ -225,16 +222,6 @@
 				Chartist.plugins.tooltip({
 					currency: "RM "
 				}),
-				// Chartist.plugins.legend({
-				// 	position: 'bottom',
-				// 	legendNames: [
-				// 		@foreach ($totalRevenues as $ticketName => $revenues)
-				// 		[
-				// 			@json($ticketName),
-				// 		],
-				// 		@endforeach
-				// 	]
-				// })
 			]
 		};
 
