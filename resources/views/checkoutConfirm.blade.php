@@ -48,7 +48,6 @@
                                         <td>
                                             <br>
                                             <p class="text-md text-dark font-weight-bold mb-0" id="name" style="padding-left: 20px;"><b>{{  $ticket->get("ticket")->event->title }}</b></p>
-                                            <p class="text-md text-dark font-weight-bold mb-0" id="name" style="padding-left: 20px;"><b>{{  $ticket->get("ticket")->type }}</b></p>
                                             <p class="text-md text-dark font-weight-bold mb-0" style="padding-left: 20px;">{{  $ticket->get("ticket")->type }}</p>
                                             <br>
                                         </td>
@@ -205,52 +204,52 @@
 @section('script')
 <script>
     $('.creditCardText').keyup(function() {
-        var foo = $(this).val().split("-").join(""); // remove hyphens
-        if (foo.length > 0) {
-          foo = foo.match(new RegExp('.{1,4}', 'g')).join("-");
+        var cardNumber = $(this).val().split("-").join(""); // remove hyphens
+        if (cardNumber.length > 0) {
+            cardNumber = cardNumber.match(new RegExp('.{1,4}', 'g')).join("-");
         }
-        $(this).val(foo);
+        $(this).val(cardNumber);
       });
     </script>
     <script>
-        const monthInput = document.querySelector('#month');
-    const yearInput = document.querySelector('#year');
-    
-    const focusSibling = function(target, direction, callback) {
-      const nextTarget = target[direction];
-      nextTarget && nextTarget.focus();
-      // if callback is supplied we return the sibling target which has focus
-      callback && callback(nextTarget);
-    }
-    
-    // input event only fires if there is space in the input for entry. 
-    // If an input of x length has x characters, keyboard press will not fire this input event.
-    monthInput.addEventListener('input', (event) => {
-    
-      const value = event.target.value.toString();
-      // adds 0 to month user input like 9 -> 09
-      if (value.length === 1 && value > 1) {
-          event.target.value = "0" + value;
-      }
-      // bounds
-      if (value === "00") {
-          event.target.value = "01";
-      } else if (value > 12) {
-          event.target.value = "12";
-      }
-      // if we have a filled input we jump to the year input
-      2 <= event.target.value.length && focusSibling(event.target, "nextElementSibling");
-      event.stopImmediatePropagation();
-    });
-    
-    yearInput.addEventListener('keydown', (event) => {
-      // if the year is empty jump to the month input
-      if (event.key === "Backspace" && event.target.selectionStart === 0) {
-        focusSibling(event.target, "previousElementSibling");
+        const month = document.querySelector('#month');
+        const year = document.querySelector('#year');
+        
+        const focusSibling = function(target, direction, callback) {
+        const nextTarget = target[direction];
+        nextTarget && nextTarget.focus();
+        // if callback is supplied we return the sibling target which has focus
+        callback && callback(nextTarget);
+        }
+        
+        // input event only fires if there is space in the input for entry. 
+        // If an input of x length has x characters, keyboard press will not fire this input event.
+        month.addEventListener('input', (event) => {
+        
+        const value = event.target.value.toString();
+        // adds 0 to month user input like 9 -> 09
+        if (value.length === 1 && value > 1) {
+            event.target.value = "0" + value;
+        }
+        // bounds
+        if (value === "00") {
+            event.target.value = "01";
+        } else if (value > 12) {
+            event.target.value = "12";
+        }
+        // if we have a filled input we jump to the year input
+        2 <= event.target.value.length && focusSibling(event.target, "nextElementSibling");
         event.stopImmediatePropagation();
-      }
-    });
-    
+        });
+        
+        year.addEventListener('keydown', (event) => {
+        // if the year is empty jump to the month input
+        if (event.key === "Backspace" && event.target.selectionStart === 0) {
+            focusSibling(event.target, "previousElementSibling");
+            event.stopImmediatePropagation();
+        }
+        });
+        
     const inputMatchesPattern = function(e) {
       const { 
         value, 
@@ -269,7 +268,7 @@
         match && match["0"] === match.input; // pattern regex isMatch - workaround for passing [0-9]* into RegExp
     };
     
-    document.querySelectorAll('input[data-pattern-validate]').forEach(el => el.addEventListener('keypress', e => {
+    document.querySelectorAll('input[data-pattern-validate]').forEach(characters => characters.addEventListener('keypress', e => {
       if (!inputMatchesPattern(e)) {
         return e.preventDefault();
       }
