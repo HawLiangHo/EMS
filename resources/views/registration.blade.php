@@ -30,7 +30,7 @@
 
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
@@ -46,7 +46,7 @@
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
@@ -62,7 +62,7 @@
 
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
@@ -77,7 +77,7 @@
                                     required autocomplete="new-password" placeholder="Please enter password">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
+                                            <strong style="color: rgb(255, 83, 83);">{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
