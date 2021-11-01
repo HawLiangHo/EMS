@@ -98,10 +98,8 @@
         var subPrice = new Array();
         @foreach ($events->tickets as $ticket)
             var quantity = document.getElementById('quantity' + {{ $ticket->id }}).value;
-            // dd($ticket->id);
-            if(quantity != ''){
-                console.log(quantity);
 
+            if(quantity != ''){
                 subPrice[{{ $loop->iteration }}] = quantity * {{ $ticket->price }};
 
                 var subprice1 = subPrice[{{ $loop->iteration }}];
@@ -111,13 +109,11 @@
                 + "<p style='text-align: left; float: left;'>" + quantity + " x " + "{{ $ticket->type }}" +"</p>"
                 + "<p style='text-align: right; float: right;'>RM " + Number(subprice1).toFixed(2) + "</p>"
                 + "</div>";
-                // showDetail.innerHTML = quantity + " x " + "{{ $ticket->name }}" + " = " + subprice1;
             }
             else{
                 var showDetail = document.getElementById('showDetail' + {{ $ticket->id }});
                 showDetail.innerHTML = '';
             }
-            //3 x Ticket 1    RM 3.00
         @endforeach
         
         var totalPrice = 0.0;
@@ -133,7 +129,7 @@
     function stateHandle(){
         let any = $("input[name='quantity[]'").toArray().some(value => value.value != "");
         button.disabled = !any;
-        console.log(any);
+
     }
     var button = document.querySelector(".button");
     var input = document.querySelector("input[name='quantity[]']");
