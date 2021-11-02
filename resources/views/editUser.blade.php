@@ -52,7 +52,7 @@
                                     class="form-control @error('name') is-invalid @enderror" name="username" 
                                     value="{{ old('username',$assistants->username) }}" required autocomplete="username" autofocus 
                                     placeholder="e.g. Adam Smith"
-                                    @if ($events->publish_status == "Published" | Auth::user()->id != $assistants->id) readonly @endif>
+                                    @if (Auth::user()->isAssistant() && Auth::user()->id != $assistants->id | $events->publish_status == "Published") readonly @endif>
 
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
@@ -69,7 +69,7 @@
                                     <input id="email" type="email" 
                                     class="form-control @error('email') is-invalid @enderror" name="email" 
                                     value="{{ old('email',$assistants->email) }}" required autocomplete="email" placeholder="e.g. adamsmith@gmail.com"
-                                    @if ($events->publish_status == "Published"  | Auth::user()->id != $assistants->id) readonly @endif>
+                                    @if (Auth::user()->isAssistant() && Auth::user()->id != $assistants->id | $events->publish_status == "Published") readonly @endif>
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -86,7 +86,7 @@
                                     <input id="phone" type="text" 
                                     class="form-control @error('phone') is-invalid @enderror" name="phone" 
                                     value="{{ old('phone',$assistants->phone) }}" placeholder="e.g. 012-3456789"
-                                    @if ($events->publish_status == "Published"  | Auth::user()->id != $assistants->id) readonly @endif>
+                                    @if (Auth::user()->isAssistant() && Auth::user()->id != $assistants->id | $events->publish_status == "Published") readonly @endif>
 
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
@@ -104,7 +104,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-12 offset-md-4">
                                     @if ($events->publish_status != "Published")
-                                        <button type="submit" class="btn btn-primary" value="Register" @if(Auth::user()->id != $assistants->id) disabled @endif>
+                                        <button type="submit" class="btn btn-primary" value="Register" @if(Auth::user()->isAssistant() && Auth::user()->id != $assistants->id | $events->publish_status == "Published") disabled @endif>
                                             {{ __('Update details') }}
                                         </button>
                                     @endif

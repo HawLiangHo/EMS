@@ -166,7 +166,7 @@ class UserController extends Controller
         $this->validate(
             $request,
             [
-                'username' => 'required|max:255|unique:users,username,'.$id.'',
+                'username' => 'required|max:255|unique:users,username,'.$user_id.'',
                 'email' => 'required|email|max:255',
                 'phone' => 'required|regex:/^(\+6)?01[0-46-9]-[0-9]{7,8}$/|max:14',
             ]);
